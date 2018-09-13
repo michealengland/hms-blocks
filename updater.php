@@ -46,23 +46,25 @@ class HMS_Blocks_Updater {
 	}
 
 	private function get_repository_info() {
-		if ( is_null( $this->github_response ) ) { // Do we have a response?
-			$request_uri = sprintf( 'https://api.github.com/repos/%s/%s/releases', $this->username, $this->repository ); // Build URI
-			if( $this->authorize_token ) { // Is there an access token?
-				$request_uri = sprintf( '%s?access_token=%s', $request_uri, $this->authorize_token ); // Append it
-			}
+	    if ( is_null( $this->github_response ) ) { // Do we have a response?
+	        $request_uri = sprintf( 'https://api.github.com/repos/%s/%s/releases', $this->username, $this->repository ); // Build URI
 
-			$response = json_decode( wp_remote_retrieve_body( wp_remote_get( $request_uri ) ), true ); // Get JSON and parse it
-			if( is_array( $response) ) { // If it is an array
-				$response = current( $response ); // Get the first item
-			}
+	        if( $this->authorize_token ) { // Is there an access token?
+	            $request_uri = add_query_arg( 'access_token', $this->authorize_token, $request_uri ); // Append it
+	        }
 
-			if( $this->authorize_token ) { // Is there an access token?
-				 $response['zipball_url'] = sprintf( '%s?access_token=%s', $response['zipball_url'], $this->authorize_token ); // Update our zip url with token
-			}
+	        $response = json_decode( wp_remote_retrieve_body( wp_remote_get( $request_uri ) ), true ); // Get JSON and parse it
 
-			$this->github_response = $response; // Set it to our property			 
-		}
+	        if( is_array( $response ) ) { // If it is an array
+	            $response = current( $response ); // Get the first item
+	        }
+
+	        if( $this->authorize_token ) { // Is there an access token?
+	            $response['zipball_url'] = add_query_arg( 'access_token', $this->authorize_token, $response['zipball_url'] ); // Update our zip url with token
+	        }
+
+	        $this->github_response = $response; // Set it to our property
+	    }
 	}
 
 	public function initialize() {
@@ -72,24 +74,30 @@ class HMS_Blocks_Updater {
 	}
 
 	public function modify_transient( $transient ) {
-		if( $checked = $transient->checked ) { // Did Wordpress check for updates?
 
-			$this->get_repository_info(); // Get the repo info
+		if( property_exists( $transient, 'checked') ) { // Check if transient has a checked property
 
-			$out_of_date = version_compare( $this->github_response['tag_name'], $checked[ $this->basename ] ); // Check if we're out of date
+			if( $checked = $transient->checked ) { // Did Wordpress check for updates?
 
-			if( $out_of_date ) {
+				$this->get_repository_info(); // Get the repo info
 
-				$new_files = $this->github_response['zipball_url']; // Get the ZIP
+				$out_of_date = version_compare( $this->github_response['tag_name'], $checked[ $this->basename ], 'gt' ); // Check if we're out of date
 
-				$plugin = array( // setup our plugin info
-					'url' => $this->plugin["PluginURI"],
-					'slug' => $this->basename,
-					'package' => $new_files,
-					'new_version' => $this->github_response['tag_name']
-				);
+				if( $out_of_date ) {
 
-				$transient->response[$this->basename] = (object) $plugin; // Return it in response
+					$new_files = $this->github_response['zipball_url']; // Get the ZIP
+
+					$slug = current( explode('/', $this->basename ) ); // Create valid slug
+
+					$plugin = array( // setup our plugin info
+						'url' => $this->plugin["PluginURI"],
+						'slug' => $slug,
+						'package' => $new_files,
+						'new_version' => $this->github_response['tag_name']
+					);
+
+					$transient->response[$this->basename] = (object) $plugin; // Return it in response
+				}
 			}
 		}
 
@@ -99,8 +107,8 @@ class HMS_Blocks_Updater {
 	public function plugin_popup( $result, $action, $args ) {
 
 		if( ! empty( $args->slug ) ) { // If there is a slug
-
-			if( $args->slug == $this->basename ) { // And it's our slug
+			
+			if( $args->slug == current( explode( '/' , $this->basename ) ) ) { // And it's our slug
 
 				$this->get_repository_info(); // Get our repo info
 
@@ -108,13 +116,19 @@ class HMS_Blocks_Updater {
 				$plugin = array(
 					'name'				=> $this->plugin["Name"],
 					'slug'				=> $this->basename,
+					'requires'					=> '3.3',
+					'tested'						=> '4.4.1',
+					'rating'						=> '100.0',
+					'num_ratings'				=> '10823',
+					'downloaded'				=> '14249',
+					'added'							=> '2016-01-05',
 					'version'			=> $this->github_response['tag_name'],
 					'author'			=> $this->plugin["AuthorName"],
 					'author_profile'	=> $this->plugin["AuthorURI"],
 					'last_updated'		=> $this->github_response['published_at'],
 					'homepage'			=> $this->plugin["PluginURI"],
 					'short_description' => $this->plugin["Description"],
-					'sections'			=> array( 
+					'sections'			=> array(
 						'Description'	=> $this->plugin["Description"],
 						'Updates'		=> $this->github_response['body'],
 					),
@@ -124,14 +138,14 @@ class HMS_Blocks_Updater {
 				return (object) $plugin; // Return the data
 			}
 
-		}	
+		}
 		return $result; // Otherwise return default
 	}
 
 	public function after_install( $response, $hook_extra, $result ) {
 		global $wp_filesystem; // Get global FS object
 
-		$install_directory = plugin_dir_path( $this->file ); // Our plugin directory 
+		$install_directory = plugin_dir_path( $this->file ); // Our plugin directory
 		$wp_filesystem->move( $result['destination'], $install_directory ); // Move files to the plugin dir
 		$result['destination'] = $install_directory; // Set the destination for the rest of the stack
 
