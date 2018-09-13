@@ -1,0 +1,137 @@
+// Import HMS child theme variable folder.
+@import "../../../wp-content/themes/hms-maverick/sass-input/partials/variables";
+
+.wp-block-hms-image-tile {
+
+  div {
+  position: relative;
+  z-index: 1;
+  margin-bottom: .2em;
+
+    h1, h2, h3, h4, h5, h6 {
+    z-index: 25;
+    color: $white;
+    font-size: unset;
+    font-size: 1.8em;
+    font-weight: $regular;
+    position: absolute;
+    bottom: .5em;
+    left: .25em;
+    pointer-events: none; // IMPORTANT FOR LINKING
+    }
+  }
+
+
+
+  > a {
+  display: block;
+  position: relative;
+
+    &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba($black, .5);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(60%, rgba(255, 255, 255, 0)), to(rgba(0, 0, 0, 0.7)));
+    background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 60%, rgba(0, 0, 0, 0.7) 100%);
+    background: -o-linear-gradient(top, rgba(255, 255, 255, 0) 60%, rgba(0, 0, 0, 0.7) 100%);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 60%, rgba(0, 0, 0, 0.7) 100%);
+    pointer-events: none; // IMPORTANT FOR LINKING
+    }
+
+    &:hover, &:focus {
+
+      &::before {
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgba(255, 255, 255, 0)), to(rgba(0, 0, 0, 0.7)));
+        background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 0, rgba(0, 0, 0, 0.7) 100%);
+        background: -o-linear-gradient(top, rgba(255, 255, 255, 0) 0, rgba(0, 0, 0, 0.7) 100%);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0, rgba(0, 0, 0, 0.7) 100%);
+      }
+    }
+
+    &:focus {
+    outline: 2px solid $color-2;
+    }
+
+
+  }
+
+  figure {
+  width: 100%;
+
+    img {
+    display: block;
+    width: 100%;
+    z-index: 1;
+    }
+  }
+
+
+  .layout-inner-content {
+  margin: 0;
+  padding: 0;
+  }
+
+  p:last-child {
+  margin-bottom: 0;
+  }
+}
+
+
+
+
+// BUG CAUSES ISSUES WITH IMAGE THAT HAS CAPTION
+.wp-block-hms-image-tile figure  {
+display: block;
+position: relative;
+
+  &::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba($black, .5);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(60%, rgba(255, 255, 255, 0)), to(rgba(0, 0, 0, 0.7)));
+  background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 60%, rgba(0, 0, 0, 0.7) 100%);
+  background: -o-linear-gradient(top, rgba(255, 255, 255, 0) 60%, rgba(0, 0, 0, 0.7) 100%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 60%, rgba(0, 0, 0, 0.7) 100%);
+  pointer-events: none; // IMPORTANT FOR LINKING
+  }
+}
+
+
+
+@media screen and (min-width: 1em) {
+  .wp-block-hms-image-tile {
+
+    p {
+    font-size: 1em;
+    line-height: 1.2em;
+    padding: $mod-gap-0;
+    }
+
+  }
+}
+
+
+@media screen and (min-width: 48em) {
+  .wp-block-hms-image-tile {
+
+    p {
+    font-size: .8em;
+    line-height: 1.2em;
+    padding: $mod-gap-0;
+    }
+
+  }
+}
+
+
+@media screen and (min-width: 60em) {
+}

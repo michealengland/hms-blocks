@@ -1,0 +1,26 @@
+.wp-block-hms-offset-columns.wp-block-columns {
+  .wp-block-column {
+  &nth-child(odd),
+  &nth-child(even), {
+  max-width: 100%;
+  }
+}
+}
+
+.wp-block-hms-offset-columns.wp-block-columns > .editor-inner-blocks > .editor-block-list__layout > [data-type="core/column"] {
+  width: auto;
+  max-width: 100%;
+}
+
+.wp-block-hms-offset-columns.wp-block-columns .wp-block-column {
+  &nth-child(odd),
+  &nth-child(even), {
+  max-width: 100% !important;
+  width: 100%;
+  }
+}
+
+.wp-block-hms-offset-columns.wp-block-columns .wp-block-column:nth-child(2n+1) {
+  max-width: 100%;
+  width: 100%;
+}

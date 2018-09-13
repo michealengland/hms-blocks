@@ -1,0 +1,47 @@
+// Import HMS child theme variable folder.
+@import "../../../wp-content/themes/hms-maverick/sass-input/partials/variables";
+
+.wp-block-hms-innerblocks-cta {
+padding: $mod-gap-1;
+
+  h1, h2, h3, h4, h5, h6 {
+  color: unset;
+  font-weight: $thick;
+  }
+
+  .layout-inner {
+  max-width: 600px;
+  }
+
+  .layout-inner:last-child {
+  margin-bottom: 0 !important;
+  }
+}
+
+
+@media screen and (min-width: 1em) {
+  .wp-block-hms-innerblocks-cta {
+  padding: $mod-gap-1;
+  margin-bottom: $mod-gap-1;
+  }
+}
+
+
+@media screen and (min-width: 48em) {
+  .wp-block-hms-innerblocks-cta {
+  padding: $mod-gap-1;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  }
+}
+
+
+@media screen and (min-width: 60em) {
+  .wp-block-hms-innerblocks-cta {
+  padding: $mod-gap-2;
+  }
+}

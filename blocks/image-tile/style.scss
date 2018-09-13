@@ -1,0 +1,120 @@
+// Import HMS child theme variable folder.
+@import "../../../wp-content/themes/hms-maverick/sass-input/partials/variables";
+
+.wp-block-hms-image-tile {
+
+  .tile-heading {
+  position: relative;
+  z-index: 1;
+  margin-bottom: .2em;
+
+    h1, h2, h3, h4, h5, h6 {
+    z-index: 25;
+    color: $white;
+    font-size: unset;
+    font-size: 1.4em;
+    font-weight: $thick;
+    padding: 0;
+    position: absolute;
+    bottom: .5em;
+    left: .25em;
+    /*
+    &:not( .editor-rich-text__tinymce ) {
+      pointer-events: none; // IMPORTANT FOR LINKING
+    }
+    */
+    
+    }
+  }
+
+  .inner-content {
+  margin: 0;
+  padding: 0;
+  }
+
+  p:last-child {
+  margin-bottom: 0;
+  }
+
+  figure {
+  margin: 0;
+  width: 100%;
+
+    &::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba($black, .6);
+    background: linear-gradient(180deg, rgba($black,.1) 60%, rgba($black, 0.9) 100%);
+    pointer-events: none; // IMPORTANT FOR LINKING
+    }
+
+    &:has(+ a) {
+      &:hover::after, &:focus::after {
+      background: linear-gradient(180deg, rgba( $black, .7 ) 0, rgba(0, 0, 0, 0.9) 100%);
+      }
+    }
+
+
+    img {
+    display: block;
+    width: 100%;
+    z-index: 1;
+    }
+  }
+
+  figcaption {
+  margin: .5em .25em;
+  text-align: left;
+  font-style: italic;
+  float: left; // Disrupts flow to make text visible outside of container overlay
+  width: 100%;
+  }
+
+
+}
+
+
+
+.editor-block-list__block-edit .wp-block-hms-image-tile .tile-heading {
+
+  h1, h2, h3, h4, h5, h6 {
+  color: inherit;
+  position: relative;
+  }
+}
+
+
+
+@media screen and (min-width: 1em) {
+  .wp-block-hms-image-tile {
+
+    p {
+    font-size: 1em;
+    line-height: 1.2em;
+    padding: $mod-gap-0;
+    }
+
+  }
+}
+
+
+@media screen and (min-width: 48em) {
+  .wp-block-hms-image-tile {
+
+    p {
+    font-size: .8em;
+    line-height: 1.2em;
+    padding: $mod-gap-0;
+    }
+
+  }
+}
+
+
+@media screen and (min-width: 60em) {
+}
