@@ -42,9 +42,7 @@ position: relative;
       content: "\f068";
       }
     }
-
   }
-
 }
 
 
@@ -56,7 +54,7 @@ position: relative;
 }
 
 .hms-toggle-content {
-  margin-top: -500%;
+  margin-top: -3000px;
   transition: all 0.5s;
 }
 // Move Content to be Visible
@@ -69,8 +67,6 @@ position: relative;
   margin-bottom:0 ;
   }
 }
-
-
 
 .wp-block-hms-toggleblock {
   background-color: $color-1;
@@ -93,8 +89,6 @@ position: relative;
 
 }
 
-
-
 @media screen and (min-width: 1em) {
   .wp-block-hms-toggleblock {
   margin-bottom: $mod-gap-1 !important;
@@ -105,14 +99,12 @@ position: relative;
   }
 }
 
-
 @media screen and (min-width: 48em) {
 
   .hms-toggle-expander .toggle-title {
   font-size: 1.8em;
   }
 }
-
 
 @media screen and (min-width: 60em) {
   .hms-toggle-expander .toggle-title {

@@ -9,14 +9,17 @@ const { __, } = wp.i18n;
 const {
 	registerBlockType,
 } = wp.blocks;
-const {
-	ContrastChecker,
-	InspectorControls,
-	InnerBlocks,
-	PanelColor,
+const {	
 	withColors,
-	getColorClass,
-  BlockControls, BlockAlignmentToolbar, MediaPlaceholder, MediaUpload, AlignmentToolbar,
+	AlignmentToolbar,
+	BlockAlignmentToolbar,
+	BlockControls,
+	InspectorControls,
+	PanelColorSettings,
+	InnerBlocks,
+	getColorClassName,
+	MediaPlaceholder,
+	MediaUpload,
 } = wp.editor;
 const {
 	PanelBody,
@@ -45,6 +48,16 @@ const FallbackStyles = withFallbackStyles((node, ownProps) => {
 		fallbackOverlayColor: overlayColor || ! computedStyles ? undefined : computedStyles.overlayColor,
 	};
 });
+
+const applyFallbackStyles = withFallbackStyles( ( node, ownProps ) => {
+	const {overlayColor} = ownProps.attributes;
+	const editableNode = node.querySelector('[contenteditable="true"]');
+	//verify if editableNode is available, before using getComputedStyle.
+	const computedStyles = editableNode ? getComputedStyle( editableNode ) : null;
+	return {
+		fallbackOverlayColor: overlayColor || ! computedStyles ? undefined : computedStyles.overlayColor,
+	};
+} );
 
 
 // Block Alignement
@@ -217,15 +230,19 @@ class InnerBlocksCoverIMG extends Component {
         </Toolbar>
       </BlockControls>
 				<InspectorControls>
-						<PanelColor
-							{...{
-								title: 'Image Overlay Color',
-								colorName: overlayColor.name,
-								colorValue: overlayColor.value,
-								initialOpen: false,
+					<PanelColorSettings
+						title={ __( 'Image Overlay Color' ) }
+						initialOpen={ false }
+						colorSettings={ [
+							{
+								value: overlayColor.color,
 								onChange: setOverlayColor,
-							} }
-						/>
+								label: __( 'Overlay Color' ),
+							},
+						] }
+					>
+					</PanelColorSettings>
+
             { !! url && (
     						<PanelBody title={ __( 'Cover Image Settings' ) }>
     							<ToggleControl
@@ -300,7 +317,7 @@ export default registerBlockType('hms/cover-img', {
   },
 	edit: compose( [
 		withColors('overlayColor'),
-		FallbackStyles,
+		applyFallbackStyles,
 	] )(InnerBlocksCoverIMG),
 
 	getEditWrapperProps( attributes ) {
@@ -315,14 +332,14 @@ export default registerBlockType('hms/cover-img', {
 		const {
 			overlayColor,
 			customOverlayColor,
-			url, title, hasParallax, dimRatio, align, contentAlign
+			url, hasParallax, dimRatio, align, contentAlign
 		}= attributes;
 
-		const overlayClass = getColorClass( 'overlay-color', overlayColor );
+		const overlayClass = getColorClassName( 'overlay-color', overlayColor );
 		const style = backgroundImageStyles( url );
+
 		const classes = classnames(
 			'wp-block-cover-image',
-			//contentAlign !== 'center' && `has-${ contentAlign }-content`,
 			contentAlign ? `has-${ contentAlign }-content` : null,
 			dimRatioToClass( dimRatio ),
 			{

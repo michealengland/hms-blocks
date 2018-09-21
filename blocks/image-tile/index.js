@@ -14,9 +14,9 @@ registerBlockType( 'hms/image-tile', {
     category: 'common',
     attributes: {
         content: {
-            type: 'array',
-            source: 'children',
-            selector: 'p',
+          type: 'array',
+          source: 'children',
+          selector: 'p',
         },
     },
 

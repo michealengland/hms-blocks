@@ -3,46 +3,46 @@ import classnames from 'classnames';
 const { __, } = wp.i18n;
 
 const {
+	registerBlockType,
+} = wp.blocks;
+const {
+	ContrastChecker,
+	InspectorControls,
+	InnerBlocks,
+	PanelColor,
+	withColors,
+	getColorClass,
+	BlockControls, BlockAlignmentToolbar, AlignmentToolbar,
+} = wp.editor;
+const {
+	PanelBody,
+	withFallbackStyles,
+	ColorPalette,
+	Toolbar,
+} = wp.components;
+
+const {
 	Component,
 	Fragment,
 } = wp.element;
-
-const {
-	registerBlockType,
-} = wp.blocks;
-
-const {
-	withColors,
-	AlignmentToolbar,
-	BlockAlignmentToolbar,
-	BlockControls,
-	ContrastChecker,
-	InspectorControls,
-	PanelColorSettings,
-	InnerBlocks,
-	getColorClassName,
-} = wp.editor;
-
-const {
-	withFallbackStyles,
-} = wp.components;
 
 const { compose } = wp.compose;
 
 import './style.scss';
 
+
 const {getComputedStyle} = window;
 
-const applyFallbackStyles = withFallbackStyles( ( node, ownProps ) => {
-	const { textColor, backgroundColor } = ownProps.attributes;
-	const editableNode = node.querySelector( '[contenteditable="true"]' );
+const FallbackStyles = withFallbackStyles((node, ownProps) => {
+	const {textColor, backgroundColor} = ownProps.attributes;
+	const editableNode = node.querySelector('[contenteditable="true"]');
 	//verify if editableNode is available, before using getComputedStyle.
-	const computedStyles = editableNode ? getComputedStyle( editableNode ) : null;
+	const computedStyles = editableNode ? getComputedStyle(editableNode) : null;
 	return {
 		fallbackBackgroundColor: backgroundColor || ! computedStyles ? undefined : computedStyles.backgroundColor,
 		fallbackTextColor: textColor || ! computedStyles ? undefined : computedStyles.color,
 	};
-} );
+});
 
 
 // Block Alignement
@@ -89,11 +89,15 @@ class HMSInnerBlocks extends Component {
 			setTextColor,
 			fallbackBackgroundColor,
 			fallbackTextColor,
+			fallbackFontSize,
 		} = this.props;
 
 		const {
 			align,
 			contentAlign,
+			content,
+			dropCap,
+			placeholder,
 		} = attributes;
 
 		const updateAlignment = ( nextAlign ) => setAttributes( { align: nextAlign } );
@@ -104,16 +108,16 @@ class HMSInnerBlocks extends Component {
 			'wp-block-column',
 			contentAlign ? `has-${ contentAlign }-content` : null,
 			{
-				'has-background': backgroundColor.color,
-				[ backgroundColor.class ]: backgroundColor.class,
+				'has-background': backgroundColor || customBackgroundColor,
 				[ textColor.class ]: textColor.class,
+				[ backgroundColor.class ]: backgroundColor.class,
 			},
 			align ? `align${ align }` : null,
 		);
 
 		const styles = ( {
-			backgroundColor: backgroundColor.color,
-			color: textColor.color,
+			backgroundColor: backgroundColor.value,
+			textColor: textColor.value,
 			textAlign: contentAlign,
 		} );
 
@@ -129,43 +133,47 @@ class HMSInnerBlocks extends Component {
 	          onChange={ updateContentAlignment }
 	        />
 				</BlockControls>
-				<InspectorControls>			
-					<PanelColorSettings
-						title={ __( 'Color Settings' ) }
-						initialOpen={ false }
-						colorSettings={ [
-							{
-								value: backgroundColor.color,
+				<InspectorControls>
+						<PanelColor
+							{...{
+								title: 'Background Color',
+								colorName: backgroundColor.name,
+								colorValue: backgroundColor.value,
+								initialOpen: false,
 								onChange: setBackgroundColor,
-								label: __( 'Background Color' ),
-							},
-							{
-								value: textColor.color,
-								onChange: setTextColor,
-								label: __( 'Text Color' ),
-							},
-						] }
-					>
-						<ContrastChecker
-							{ ...{
-								textColor: textColor.color,
-								backgroundColor: backgroundColor.color,
-								fallbackTextColor,
-								fallbackBackgroundColor,
 							} }
 						/>
-					</PanelColorSettings>
-				</InspectorControls>
-				<div
-				className={ classes }
-				style={ styles }
-				>
+
+						<PanelColor
+							{...{
+								title: 'Text Color',
+								colorName: textColor.name,
+								colorValue: textColor.value,
+								initialOpen: false,
+								onChange: setTextColor,
+							} }
+						/>
+
+						<ContrastChecker
+							textColor={ textColor.value }
+							backgroundColor={ backgroundColor.value }
+							{ ...{
+								fallbackBackgroundColor,
+								fallbackTextColor,
+							} }
+						/>
+
+			</InspectorControls>
+			<div
+			className={ classes }
+			style={ styles }
+			 >
 				<InnerBlocks
-				layouts={ [
-					{ name: 'inner', label: 'Inner Blocks CTA', icon: 'columns' },
-				] }
-				/>
-				</div>
+          layouts={ [
+            { name: 'inner', label: 'Inner Blocks CTA', icon: 'columns' },
+          ] }
+        />
+			</div>
 			</Fragment>
 		);
 	}
@@ -196,8 +204,8 @@ export default registerBlockType('hms/innerblocks', {
 		},
 	},
 	edit: compose( [
-		withColors( 'backgroundColor', { textColor: 'color' } ),
-		applyFallbackStyles,
+		withColors('backgroundColor', {textColor: 'color'}),
+		FallbackStyles,
 	] )(HMSInnerBlocks),
 	save: props => {
 		const {
@@ -210,10 +218,9 @@ export default registerBlockType('hms/innerblocks', {
 		} = props.attributes;
 
 
-		const updateAlignment = ( nextAlign ) => setAttributes( { align: nextAlign } );
-
-		const textClass = getColorClassName( 'color', textColor );
-		const backgroundClass = getColorClassName( 'background-color', backgroundColor );
+		//const updateAlignment = ( nextAlign ) => setAttributes( { align: nextAlign } );
+		const textClass = getColorClass( 'color', textColor );
+		const backgroundClass = getColorClass( 'background-color', backgroundColor );
 
 		const className = classnames(
 			//contentAlign !== 'center' && `has-${ contentAlign }-content`,
@@ -226,14 +233,8 @@ export default registerBlockType('hms/innerblocks', {
 			},
 			align ? `align${ align }` : null,
 		);
-
-		const styles = {
-			backgroundColor: backgroundClass ? undefined : customBackgroundColor,
-			color: textClass ? undefined : customTextColor,
-		};
-
 		return (
-			<div className={className} style={ styles }>
+			<div className={className}>
 				<InnerBlocks.Content/>
 			</div>
 		);

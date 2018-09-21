@@ -30,6 +30,8 @@ const {
 	Fragment,
 } = wp.element;
 
+import './style.scss';
+
 const { compose } = wp.compose;
 
 const {getComputedStyle} = window;
@@ -56,7 +58,7 @@ function getEditWrapperProps( attributes ) {
 	}
 }
 
-class NestedTemplateCTA extends Component {
+class InnerBlocksCoverIMG extends Component {
 	constructor() {
 		super(...arguments);
 		this.onReplace = this.onReplace.bind( this );
@@ -89,9 +91,13 @@ class NestedTemplateCTA extends Component {
 		} = this.props;
 
 		const {
-			content,
-			placeholder,
-      url, title, align, contentAlign, id, hasParallax, dimRatio
+			url,
+			title,
+			align,
+			contentAlign,
+			id,
+			hasParallax,
+			dimRatio
 		} = attributes;
 
     const updateAlignment = ( nextAlign ) => setAttributes( { align: nextAlign } );
@@ -250,26 +256,19 @@ class NestedTemplateCTA extends Component {
 					style={ styles }
         >
 
-				<InnerBlocks
-          layouts={ [
-            { name: 'inner', label: 'Inner Content', icon: 'columns' },
-          ] }
-
-          template={
-            [
-              [ 'core/heading', { layout:'inner', placeholder:'Cover Image Header...' } ],
-              [ 'core/paragraph', { layout:'inner', placeholder:'Cover image content goes here...' } ],
-            ]
-          }
-        />
-			</div>
+					<InnerBlocks
+	          layouts={ [
+	            { name: 'inner', label: 'Inner Content', icon: 'columns' },
+	          ] }
+	        />
+				</div>
 			</Fragment>
 		);
 	}
 }
 
-export default registerBlockType('hms/cover-img-template', {
-	title: __( 'Inner Blocks Cover Image Template', 'hmsblocks' ),
+export default registerBlockType('hms/cover-img', {
+	title: __( 'Inner Blocks Cover Image', 'hmsblocks' ),
 	icon: 'format-image',
 	category: 'common',
   attributes: {
@@ -306,7 +305,7 @@ export default registerBlockType('hms/cover-img-template', {
 	edit: compose( [
 		withColors('overlayColor'),
 		FallbackStyles,
-	] )(NestedTemplateCTA),
+	] )(InnerBlocksCoverIMG),
 
 	getEditWrapperProps( attributes ) {
 		const { align } = attributes;
@@ -327,7 +326,8 @@ export default registerBlockType('hms/cover-img-template', {
 		const style = backgroundImageStyles( url );
 		const classes = classnames(
 			'wp-block-cover-image',
-			contentAlign !== 'center' && `has-${ contentAlign }-content`,
+			//contentAlign !== 'center' && `has-${ contentAlign }-content`,
+			contentAlign ? `has-${ contentAlign }-content` : null,
 			dimRatioToClass( dimRatio ),
 			{
 				'has-background-dim': dimRatio !== 0,

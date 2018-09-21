@@ -7,7 +7,7 @@
  * Domain Path: /languages
  * Author: Mike England @mikelikethebike
  * Author URI: https://twitter.com/mikelikethebike
- * Version: 1.0.1
+ * Version: 1.0.2
  * License: GPL2+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  *
@@ -22,10 +22,14 @@ include_once( plugin_dir_path( __FILE__ ) . 'updater.php' );
 $updater = new HMS_Blocks_Updater( __FILE__ );
 $updater->set_username( 'michealengland' );
 $updater->set_repository( 'hms-blocks' );
-/* 
-	$updater->authorize( 'abcdefghijk1234567890' ); // Your auth code goes here for private repos
-*/
+// $updater->authorize( 'abcdefghijk1234567890' ); // Your auth code goes here for private repos
+
 $updater->initialize();
+
+require dirname( __FILE__ ) . '/options.php';
+
+$toggle_options = get_option( 'my_option_name');
+$form_embed_opt = $toggle_options['eb_form_embed'];
 
 // Enqueue JS and CSS
 include( plugin_dir_path( __FILE__ ) . 'lib/enqueue-scripts.php');

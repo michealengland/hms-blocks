@@ -3,6 +3,7 @@ Contributors: @mikeengland
 Tags: Gutenberg, Blocks
 Requires at least: 4.9.8
 Requires PHP: 5.2.4
+Requires Gutenberg: 3.9
 Stable tag: 4.9.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html

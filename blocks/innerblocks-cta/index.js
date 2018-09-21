@@ -3,46 +3,46 @@ import classnames from 'classnames';
 const { __, } = wp.i18n;
 
 const {
-	registerBlockType,
-} = wp.blocks;
-const {
-	ContrastChecker,
-	InspectorControls,
-	InnerBlocks,
-	PanelColor,
-	withColors,
-	getColorClass,
-	BlockControls, BlockAlignmentToolbar, AlignmentToolbar,
-} = wp.editor;
-const {
-	PanelBody,
-	withFallbackStyles,
-	ColorPalette,
-	Toolbar,
-} = wp.components;
-
-const {
 	Component,
 	Fragment,
 } = wp.element;
+
+const {
+	registerBlockType,
+} = wp.blocks;
+
+const {
+	withColors,
+	AlignmentToolbar,
+	BlockAlignmentToolbar,
+	BlockControls,
+	ContrastChecker,
+	InspectorControls,
+	PanelColorSettings,
+	InnerBlocks,
+	getColorClassName,
+} = wp.editor;
+
+const {
+	withFallbackStyles,
+} = wp.components;
 
 const { compose } = wp.compose;
 
 import './style.scss';
 
-
 const {getComputedStyle} = window;
 
-const FallbackStyles = withFallbackStyles((node, ownProps) => {
-	const {textColor, backgroundColor} = ownProps.attributes;
-	const editableNode = node.querySelector('[contenteditable="true"]');
+const applyFallbackStyles = withFallbackStyles( ( node, ownProps ) => {
+	const { textColor, backgroundColor } = ownProps.attributes;
+	const editableNode = node.querySelector( '[contenteditable="true"]' );
 	//verify if editableNode is available, before using getComputedStyle.
-	const computedStyles = editableNode ? getComputedStyle(editableNode) : null;
+	const computedStyles = editableNode ? getComputedStyle( editableNode ) : null;
 	return {
 		fallbackBackgroundColor: backgroundColor || ! computedStyles ? undefined : computedStyles.backgroundColor,
 		fallbackTextColor: textColor || ! computedStyles ? undefined : computedStyles.color,
 	};
-});
+} );
 
 
 // Block Alignement
@@ -89,15 +89,11 @@ class NestedTemplateCTA extends Component {
 			setTextColor,
 			fallbackBackgroundColor,
 			fallbackTextColor,
-			fallbackFontSize,
 		} = this.props;
 
 		const {
 			align,
 			contentAlign,
-			content,
-			dropCap,
-			placeholder,
 		} = attributes;
 
 		const updateAlignment = ( nextAlign ) => setAttributes( { align: nextAlign } );
@@ -116,8 +112,8 @@ class NestedTemplateCTA extends Component {
 		);
 
 		const styles = ( {
-			backgroundColor: backgroundColor.value,
-			textColor: textColor.value,
+			backgroundColor: backgroundColor.color,
+			color: textColor.color,
 			textAlign: contentAlign,
 		} );
 
@@ -134,41 +130,37 @@ class NestedTemplateCTA extends Component {
 	        />
 				</BlockControls>
 				<InspectorControls>
-						<PanelColor
-							{...{
-								title: 'Background Color',
-								colorName: backgroundColor.name,
-								colorValue: backgroundColor.value,
-								initialOpen: false,
+					<PanelColorSettings
+						title={ __( 'Color Settings' ) }
+						initialOpen={ false }
+						colorSettings={ [
+							{
+								value: backgroundColor.color,
 								onChange: setBackgroundColor,
-							} }
-						/>
-
-						<PanelColor
-							{...{
-								title: 'Text Color',
-								colorName: textColor.name,
-								colorValue: textColor.value,
-								initialOpen: false,
+								label: __( 'Background Color' ),
+							},
+							{
+								value: textColor.color,
 								onChange: setTextColor,
-							} }
-						/>
-
+								label: __( 'Text Color' ),
+							},
+						] }
+					>
 						<ContrastChecker
-							textColor={ textColor.value }
-							backgroundColor={ backgroundColor.value }
 							{ ...{
-								fallbackBackgroundColor,
+								textColor: textColor.color,
+								backgroundColor: backgroundColor.color,
 								fallbackTextColor,
+								fallbackBackgroundColor,
 							} }
 						/>
-
-			</InspectorControls>
+					</PanelColorSettings>
+				</InspectorControls>
 			<div
 				className={ classes }
 				style={ styles }
 			 >
-				<InnerBlocks
+		<InnerBlocks
 
           layouts={ [
             { name: 'inner', label: 'Inner Blocks CTA', icon: 'columns' },
@@ -214,7 +206,7 @@ export default registerBlockType('hms/innerblocks-cta', {
 	},
 	edit: compose( [
 		withColors('backgroundColor', {textColor: 'color'}),
-		FallbackStyles,
+		applyFallbackStyles,
 	] )(NestedTemplateCTA),
 	save: props => {
 		const {
@@ -227,9 +219,9 @@ export default registerBlockType('hms/innerblocks-cta', {
 		} = props.attributes;
 
 
-		//const updateAlignment = ( nextAlign ) => setAttributes( { align: nextAlign } );
-		const textClass = getColorClass( 'color', textColor );
-		const backgroundClass = getColorClass( 'background-color', backgroundColor );
+		const updateAlignment = ( nextAlign ) => setAttributes( { align: nextAlign } );
+		const textClass = getColorClassName( 'color', textColor );
+		const backgroundClass = getColorClassName( 'background-color', backgroundColor );
 
 		const className = classnames(
 			//contentAlign !== 'center' && `has-${ contentAlign }-content`,
@@ -241,8 +233,14 @@ export default registerBlockType('hms/innerblocks-cta', {
 			},
 			align ? `align${ align }` : null,
 		);
+
+		const styles = {
+			backgroundColor: backgroundClass ? undefined : customBackgroundColor,
+			color: textClass ? undefined : customTextColor,
+		};
+
 		return (
-			<div className={className}>
+			<div className={className} style={ styles }>
 				<InnerBlocks.Content/>
 			</div>
 		);
