@@ -14,3 +14,5 @@ import './offset-columns';                    // Inner Blocks Columns 2-3 Range 
 
 
 import './post-feed'; // In development
+
+import './custom-post-feed-test'; // In development

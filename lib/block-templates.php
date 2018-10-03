@@ -53,9 +53,19 @@ function render_block_custom_post_feed( $attributes ) {
 
         $list_items_markup .= '<li>';
         
-        if( has_post_thumbnail($post_id) ) {
-            $list_items_markup .= get_the_post_thumbnail( $post_id, 'thumbnail' );
-        }
+
+		// If Post Thumb Option Enabled
+		/* TEMP DISABLED
+		if ( isset( $attributes['displayPostThumbnail'] ) && $attributes['displayPostThumbnail'] ) {
+			if( has_post_thumbnail($post_id) ) {
+				$list_items_markup .= get_the_post_thumbnail( $post_id, 'thumbnail' );
+			}
+		}
+		*/
+
+		if( has_post_thumbnail($post_id) ) {
+			$list_items_markup .= get_the_post_thumbnail( $post_id, 'thumbnail' );
+		}
 
 		$list_items_markup .= sprintf(
             '<a href="%1$s">%2$s</a>',
@@ -70,7 +80,8 @@ function render_block_custom_post_feed( $attributes ) {
 				esc_attr( get_the_date( 'c', $post_id ) ),
 				esc_html( get_the_date( '', $post_id ) )
 			);
-        }
+		}
+		
         
 		$list_items_markup .= "</li>\n";
 	}

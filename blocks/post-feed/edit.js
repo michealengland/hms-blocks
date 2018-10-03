@@ -153,9 +153,9 @@ class CustomPostsFeedEdit extends Component {
 				>
 					{ displayPosts.map( ( post, i ) =>
 						<li key={ i }>
-
 						
 						{
+						/*
 							displayPostThumbnail && post.featured_image_src !== undefined && post.featured_image_src ? (
 								<div class="featured-img">
 									<img
@@ -166,6 +166,7 @@ class CustomPostsFeedEdit extends Component {
 							) : (
 								null
 							)
+						*/
 						}
 							<a href={ post.link } target="_blank">{ decodeEntities( post.title.rendered.trim() ) || __( '(Untitled)' ) }</a>
 							{ displayPostDate && post.date_gmt &&
