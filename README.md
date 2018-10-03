@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ## 1.0.4 
 - Created custom post feed block.
 - Added packages for "moment": "^2.22.1" and "moment-timezone": "^0.5.16" to package.json
+- Disabled thubmnail options on post feed block. The block will automatically display featured images.
 
 ## 1.0.3 
 - Made updates to blocks that utilize color settings to use 'getColorClassName' instead of 'getColorClassName'.
