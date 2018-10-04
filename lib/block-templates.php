@@ -33,6 +33,7 @@ function my_add_template_to_posts() {
  * @return string Returns the post content with latest posts added.
  */
 function render_block_custom_post_feed( $attributes ) {
+
 	$recent_posts = wp_get_recent_posts(
 		array(
             //'post_type'   => 
@@ -63,7 +64,7 @@ function render_block_custom_post_feed( $attributes ) {
 		}
 		*/
 
-		if( has_post_thumbnail($post_id) ) {
+		if( has_post_thumbnail( $post_id ) ) {
 			$list_items_markup .= get_the_post_thumbnail( $post_id, 'thumbnail' );
 		}
 
@@ -154,3 +155,6 @@ function register_block_custom_post_feed() {
 }
 
 add_action( 'init', 'register_block_custom_post_feed' );
+
+
+

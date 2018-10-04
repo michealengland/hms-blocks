@@ -97,7 +97,7 @@ function enqueue_flexslider() {
 function enqueue_toggle_block_js() {
 
   // enqueue jQuery
-  wp_register_script( 'hms_simple_toggle_jquery', 'http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js', false, '2.1.3', false );
+  wp_register_script( 'hms_simple_toggle_jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js', false, '2.1.3', false );
   wp_enqueue_script( 'hms_simple_toggle_jquery' );
 
   // enqueue file in footer
