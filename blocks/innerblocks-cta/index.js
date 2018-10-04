@@ -30,6 +30,7 @@ const {
 const { compose } = wp.compose;
 
 import './style.scss';
+import './editor.scss';
 
 const {getComputedStyle} = window;
 
@@ -47,14 +48,6 @@ const applyFallbackStyles = withFallbackStyles( ( node, ownProps ) => {
 
 // Block Alignement
 const validAlignments = [ 'left', 'center', 'right', 'wide', 'full' ];
-
-function getEditWrapperProps( attributes ) {
-	const { align } = attributes;
-	if ( -1 !== validAlignments.indexOf( align ) ) {
-		return { 'data-align': align };
-	}
-}
-
 
 class NestedTemplateCTA extends Component {
 	constructor() {
@@ -208,6 +201,14 @@ export default registerBlockType('hms/innerblocks-cta', {
 		withColors('backgroundColor', {textColor: 'color'}),
 		applyFallbackStyles,
 	] )(NestedTemplateCTA),
+
+	getEditWrapperProps( attributes ) {
+		const { align } = attributes;
+		if ( -1 !== validAlignments.indexOf( align ) ) {
+			return { 'data-align': align };
+		}
+	},
+
 	save: props => {
 		const {
 			align,

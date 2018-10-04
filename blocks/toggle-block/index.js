@@ -1,11 +1,10 @@
-import classnames from 'classnames';
-
 const { __ } = wp.i18n;
 
 const { registerBlockType } = wp.blocks;
 const { RichText, InnerBlocks  } = wp.editor;
 
 import './style.scss';
+import './editor.scss';
 
 registerBlockType( 'hms/toggleblock', {
     title: 'Toggle Block',
@@ -25,14 +24,10 @@ registerBlockType( 'hms/toggleblock', {
     },
 
     edit( { attributes, className, setAttributes, placeholder } ) {
-        const { toggleTitle, toggleContent } = attributes;
+        const { toggleTitle } = attributes;
 
         function onChangeToggleTitle( newToggleTitle ) {
           setAttributes( { toggleTitle: newToggleTitle } );
-        }
-
-        function onChangeToggleContent( newToggleContent ) {
-          setAttributes( { toggleContent: newToggleContent } );
         }
 
         return (
@@ -58,17 +53,19 @@ registerBlockType( 'hms/toggleblock', {
     },
 
     save( { attributes, className } ) {
-        const { toggleContent, toggleTitle } = attributes;
+        const { toggleTitle } = attributes;
 
         return (
 
           <div className={ className }>
-          <heading class="hms-toggle-expander">
-            <RichText.Content
-            tagName="h2"
-            className={ 'toggle-title' }
-            value={ toggleTitle }
-            /></heading>
+            
+            <heading class="hms-toggle-expander">
+              <RichText.Content
+              tagName="h2"
+              className={ 'toggle-title' }
+              value={ toggleTitle }
+              />
+            </heading>
 
             <div class="hms-toggle-wrapper">
               <div class="hms-toggle-content">

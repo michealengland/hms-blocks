@@ -1,0 +1,13 @@
+// make block visible while editing.
+.editor-block-list__block-edit {
+    
+    .hms-toggle-wrapper {
+    overflow: visible;
+    }
+  
+    .hms-toggle-content {
+    background-color: rgba(0, 0, 0, .2);
+    margin-top: 0;
+    }
+  
+}

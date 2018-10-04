@@ -7,6 +7,7 @@ const { registerBlockType } = wp.blocks;
 const { RichText, InnerBlocks } = wp.editor;
 
 import './style.scss';
+import './editor.scss';
 
 registerBlockType( 'hms/image-tile', {
     title: 'Image Tile',

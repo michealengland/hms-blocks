@@ -1,8 +1,19 @@
 # HMS Blocks
-
 All notable changes to this project will be documented in this file.
 
 ##Change Log
+
+## 1.0.5
+- Removed testing block.
+- Removed readme.txt
+- Added editor.scss files to blocks.
+- Improved editor color styling on blocks with color options. 
+- Fixed block align on CTA, and Innerblocks.
+- Updated to version 1.0.5
+- Removed color styles from toggle.
+- Removed unused constants from toggle.
+- Removed Font Awesome from toggle icon.
+
 ## 1.0.4 
 - Created custom post feed block.
 - Added packages for "moment": "^2.22.1" and "moment-timezone": "^0.5.16" to package.json

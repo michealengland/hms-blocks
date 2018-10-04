@@ -1,0 +1,13 @@
+.wp-block-hms-innerblocks:not(.has-white-background-color) {
+
+    // Button Icon Overwrite Default Colors 
+    .editor-block-list__empty-block-inserter .editor-inserter__toggle:not(:hover),
+    .editor-default-block-appender .editor-inserter .editor-inserter__toggle:not(:hover) {
+    color: #fff;
+    }
+
+    // Placeholder
+    .editor-rich-text__tinymce + .editor-rich-text__tinymce, .editor-rich-text__tinymce + .editor-rich-text__tinymce p {
+    color: rgba(255,255,255,.7);
+    }
+}

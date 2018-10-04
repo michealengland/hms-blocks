@@ -16,30 +16,21 @@ position: relative;
 
   .toggle-title {
   font-size: 1.4em;
-  color: $white;
   margin-bottom: 0;
   padding-bottom: 0;
 
     &::before {
-    content: "\f067";
-    color: $color-2;
-    font-family: FontAwesome;
+    content: "+";
     font-size: inherit;
     margin-right: .5em;
     }
   }
 
-  &:hover,
-  &.active:hover {
-  color: $color-2;
-  }
-
   &.active {
-  color: $color-3;
 
     .toggle-title  {
       &::before {
-      content: "\f068";
+      content: "-";
       }
     }
   }
@@ -59,34 +50,11 @@ position: relative;
 }
 // Move Content to be Visible
 .hms-toggle-wrapper.open .hms-toggle-content {
-  margin: .25em 0 1em 0;
-  background-color: $color-1;
-  color: $white;
+  margin-top: 0;
 
   p:last-child {
   margin-bottom:0 ;
   }
-}
-
-.wp-block-hms-toggleblock {
-  background-color: $color-1;
-  color: $white;
-  max-width: $mw-1;
-  margin: 0 auto;
-  padding: $mod-gap-1;
-}
-
-// make block visible while editing.
-.editor-block-list__block-edit {
-  .hms-toggle-wrapper {
-  overflow: visible;
-  }
-
-  .hms-toggle-content {
-  background-color: rgba($black, .2);
-  margin-top: 0;
-  }
-
 }
 
 @media screen and (min-width: 1em) {

@@ -30,6 +30,7 @@ const {
 const { compose } = wp.compose;
 
 import './style.scss';
+import './editor.scss';
 
 const {getComputedStyle} = window;
 
@@ -44,17 +45,9 @@ const applyFallbackStyles = withFallbackStyles( ( node, ownProps ) => {
 	};
 } );
 
-
 // Block Alignement
 const validAlignments = [ 'left', 'center', 'right', 'wide', 'full' ];
-
-function getEditWrapperProps( attributes ) {
-	const { align } = attributes;
-	if ( -1 !== validAlignments.indexOf( align ) ) {
-		return { 'data-align': align };
-	}
-}
-
+const updateAlignment = ( nextAlign ) => setAttributes( { align: nextAlign } );
 
 class HMSInnerBlocks extends Component {
 	constructor() {
@@ -125,9 +118,9 @@ class HMSInnerBlocks extends Component {
 						onChange={ updateAlignment }
 					/>
 					<AlignmentToolbar
-	          value={ contentAlign }
-	          onChange={ updateContentAlignment }
-	        />
+						value={ contentAlign }
+						onChange={ updateContentAlignment }
+					/>
 				</BlockControls>
 				<InspectorControls>			
 					<PanelColorSettings
@@ -199,6 +192,14 @@ export default registerBlockType('hms/innerblocks', {
 		withColors( 'backgroundColor', { textColor: 'color' } ),
 		applyFallbackStyles,
 	] )(HMSInnerBlocks),
+
+	getEditWrapperProps( attributes ) {
+		const { align } = attributes;
+		if ( -1 !== validAlignments.indexOf( align ) ) {
+			return { 'data-align': align };
+		}
+	},
+
 	save: props => {
 		const {
 			align,

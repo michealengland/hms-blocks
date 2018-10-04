@@ -9,7 +9,7 @@ const { registerBlockType } = wp.blocks;
  */
 import edit from './edit';
 import './style.scss';
-import './edit.scss';
+import './editor.scss';
 
 export default registerBlockType(
     'hms/custom-post-feed',

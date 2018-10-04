@@ -34,6 +34,7 @@ const {
 } = wp.element;
 
 import './style.scss';
+import './editor.scss';
 
 const { compose } = wp.compose;
 
