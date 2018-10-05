@@ -14,3 +14,5 @@ import './offset-columns';                    // Inner Blocks Columns 2-3 Range 
 
 
 import './post-feed'; // In development
+
+import './events-post-feed';                       // Inner Blocks Single Column w/ Color Panel

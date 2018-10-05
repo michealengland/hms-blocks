@@ -1,0 +1,38 @@
+// ul
+.hms-custom-post-feed {
+    
+    // List Layout
+    &:not( .is-grid ) {
+    margin-left: 0;
+
+        li {
+        display: block;
+    
+            img {
+            display: inline-block;
+            width: 48px;
+            height: 48px;
+            margin-right: 6px;
+            }
+
+        }
+    }
+
+    // Grid Layout
+    &.is-grid {
+    margin-left: 0;
+        li {
+        display: flex;
+        flex: 1 1 auto;
+        align-items: center;
+        justify-content: flex-end;
+        background-color: #eee;
+        flex-direction: column;
+
+            img {
+            display: block;
+            width: 100%;
+            }
+        }
+    }
+}
