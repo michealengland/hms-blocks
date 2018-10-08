@@ -194,6 +194,9 @@ export default withSelect( ( select, props ) => {
 	const categoriesListQuery = {
 		per_page: 100,
 	};
+
+	console.log(latestPostsQuery);
+
 	return {
 		latestPosts: getEntityRecords( 'postType', 'post', latestPostsQuery ),
 		categoriesList: getEntityRecords( 'taxonomy', 'category', categoriesListQuery ),

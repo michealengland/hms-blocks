@@ -36,3 +36,10 @@ include( plugin_dir_path( __FILE__ ) . 'lib/enqueue-scripts.php');
 
 // Block Templates
 include( plugin_dir_path( __FILE__ ) . 'lib/block-templates.php');
+
+
+// Post Feed Callback
+include( plugin_dir_path( __FILE__ ) . 'blocks/post-feed/callback.php');
+
+// Events Post Feed Callback
+include( plugin_dir_path( __FILE__ ) . 'blocks/events-post-feed/callback.php');

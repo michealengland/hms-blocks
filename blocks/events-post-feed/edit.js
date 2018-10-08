@@ -151,7 +151,8 @@ class EventsPostsFeedEdit extends Component {
 					} ) }
 				>
 					{ displayPosts.map( ( post, i ) =>
-						<li key={ i }>
+						
+						<li key={ post.id }>
 						
 						{
 						/*
@@ -185,29 +186,44 @@ export default withSelect( ( select, props ) => {
 	const { postsToShow, order, orderBy, categories } = props.attributes;
 	const { getEntityRecords } = select( 'core' );
 
-	//console.log( 'Category ID: '+categories );
-
 	const latestPostsQuery = pickBy( {
-		categories, // Category ID
+		category: categories,
 		order,
 		orderby: orderBy,
 		per_page: postsToShow,
-		taxonomy: 'hms_event_types',
 	},
 	
 	( value ) => ! isUndefined( value ) );
-
-	//console.log(latestPostsQuery);
-
+	
 	const categoriesListQuery = {
 		per_page: 100,
+		showPostsCount: true,
 	};
 
-	//console.log('Cat List Query: '+categoriesListQuery);
-	console.log( getEntityRecords( 'taxonomy', 'hms_event_types' ));
+	console.log( latestPostsQuery );
 	
 	return {
+		/**
+		 * Requests the entity's records from the REST API.
+		 *
+		 * @param {string}  kind   Entity kind.
+		 * @param {string}  name   Entity name.
+		 * @param {Object?} query  Query Object.
+		 * 
+		 * getEntityRecords( kind, name, query = {} )
+		 */
+		// Enables post type on displayed posts.
 		latestPosts: getEntityRecords( 'postType', 'hms_events_cpt_1', latestPostsQuery ),
-		categoriesList: getEntityRecords( 'taxonomy', 'hms_event_types', categoriesListQuery ),
+		// Add taxonomies to list.
+		categoriesList: getEntityRecords( 'taxonomy','hms_event_types', categoriesListQuery ),
+
+		// Original Post Query
+		//latestPosts: getEntityRecords( 'postType', 'post', latestPostsQuery ),
+		//categoriesList: getEntityRecords( 'taxonomy', 'category', categoriesListQuery ),
+		
 	};
+
+
+	
+
 } )( EventsPostsFeedEdit );
