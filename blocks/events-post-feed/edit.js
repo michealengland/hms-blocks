@@ -69,6 +69,7 @@ class EventsPostsFeedEdit extends Component {
 						onCategoryChange={ ( value ) => setAttributes( { categories: '' !== value ? value : undefined } ) }
 						onNumberOfItemsChange={ ( value ) => setAttributes( { postsToShow: value } ) }
 					/>
+
 					<ToggleControl
 						label={ __( 'Display Post Thumbnail' ) }
 						checked={ displayPostThumbnail }
@@ -80,6 +81,7 @@ class EventsPostsFeedEdit extends Component {
 						checked={ displayPostDate }
 						onChange={ this.toggleDisplayPostDate }
 					/>
+
 					{ postLayout === 'grid' &&
 						<RangeControl
 							label={ __( 'Columns' ) }
@@ -187,7 +189,7 @@ export default withSelect( ( select, props ) => {
 	const { getEntityRecords } = select( 'core' );
 
 	const latestPostsQuery = pickBy( {
-		category: categories,
+		categories,
 		order,
 		orderby: orderBy,
 		per_page: postsToShow,

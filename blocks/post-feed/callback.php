@@ -15,7 +15,6 @@ function render_block_custom_post_feed( $attributes ) {
 
 	$recent_posts = wp_get_recent_posts(
 		array(
-            //'post_type'   => 
 			'numberposts' => $attributes['postsToShow'],
 			'post_status' => 'publish',
 			'order'       => $attributes['order'],
