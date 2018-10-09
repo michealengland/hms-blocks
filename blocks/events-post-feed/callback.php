@@ -22,6 +22,7 @@ function render_block_event_post_feed( $attributes ) {
 					'terms'    => $attributes['categories'],
 				),
 			),
+			'OBJECT',
 			//'category'    => $attributes['categories'],
 		)
 	);
@@ -45,9 +46,16 @@ function render_block_event_post_feed( $attributes ) {
 		}
 		*/
 
+		/*
 		if( has_post_thumbnail( $post_id ) ) {
 			$list_items_markup .= get_the_post_thumbnail( $post_id, 'thumbnail' );
 		}
+		*/
+
+		if ( isset( $attributes['displayPostImage'] ) && $attributes['displayPostImage'] ) {
+			$list_items_markup .= get_the_post_thumbnail( $post_id, 'thumbnail' );
+		}
+		
 
 		$list_items_markup .= sprintf(
             '<a href="%1$s">%2$s</a>',
@@ -92,6 +100,12 @@ function render_block_event_post_feed( $attributes ) {
  * Registers the `core/latest-posts` block on server.
  */
 function register_block_event_post_feed() {
+
+	// Check if the register function exists
+	if ( ! function_exists( 'register_block_type' ) ) {
+		return;
+	}
+
 	register_block_type(
 		'hms/events',
 		array(
@@ -109,6 +123,14 @@ function register_block_event_post_feed() {
 				'displayPostDate' => array(
 					'type'    => 'boolean',
 					'default' => false,
+				),
+				'displayPostImage' => array(
+					'type'    => 'boolean',
+					'default' => false,
+				),
+				'imageCrop'  => array(
+					'type' => 'string',
+					'default' => 'landscape',
 				),
 				'postLayout'      => array(
 					'type'    => 'string',
@@ -129,6 +151,11 @@ function register_block_event_post_feed() {
 					'type'    => 'string',
 					'default' => 'date',
 				),
+				'startDate' => array(
+					'type' => 'string',
+					'source' => 'meta',
+					'meta' => 'event_date_start',
+				),
 			),
             'render_callback' => 'render_block_event_post_feed',
 		)
@@ -136,3 +163,82 @@ function register_block_event_post_feed() {
 }
 
 add_action( 'init', 'register_block_event_post_feed' );
+
+
+
+
+
+
+
+
+
+/**
+ * Create API fields for additional info
+ */
+function hms_blocks_register_rest_fields() {
+	// Add landscape featured image source
+	register_rest_field(
+		'hms_events_cpt_1',
+		'featured_image_src',
+		array(
+			'get_callback' => 'hms_blocks_get_image_src_landscape',
+			'update_callback' => null,
+			'schema' => null,
+		)
+	);
+
+	// Add square featured image source
+	register_rest_field(
+		'hms_events_cpt_1',
+		'featured_image_src_square',
+		array(
+			'get_callback' => 'hms_blocks_get_image_src_square',
+			'update_callback' => null,
+			'schema' => null,
+		)
+	);
+
+}
+add_action( 'rest_api_init', 'hms_blocks_register_rest_fields' );
+
+
+
+
+/**
+ * Get landscape featured image source for the rest field
+ */
+function hms_blocks_get_image_src_landscape( $object, $field_name, $request ) {
+	$feat_img_array = wp_get_attachment_image_src(
+		$object['featured_media'],
+		'hms-block-post-grid-landscape',
+		false
+	);
+	return $feat_img_array[0];
+}
+
+/**
+ * Get square featured image source for the rest field
+ */
+function hms_blocks_get_image_src_square( $object, $field_name, $request ) {
+	$feat_img_array = wp_get_attachment_image_src(
+		$object['featured_media'],
+		'hms-block-post-grid-square',
+		false
+	);
+	return $feat_img_array[0];
+}
+
+
+
+
+function hms_blocks_register_post_meta() {
+	$args = array(
+		'type' => 'string',
+		'single' => true,
+		'show_in_rest' => true,
+	);
+
+	register_meta( 'post', 'hms_events_meta', $args );
+}
+
+add_action( 'init', 'hms_blocks_register_post_meta' );

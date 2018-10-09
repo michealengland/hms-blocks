@@ -12,7 +12,5 @@ import './toggle-block';                      // Toggle Block w/ Heading & Inner
 import './offset-columns';                    // Inner Blocks Columns 2-3 Range w/ Toggle Control
 //import './flexslider';                        // Custom Flex Slider. SCRIPTS ARE LOADED IN CHILD THEME... NEED BETTER SOLUTION
 
-
-import './post-feed'; // In development
-
-import './events-post-feed';                       // Inner Blocks Single Column w/ Color Panel
+import './post-feed';                         // In development
+import './events-post-feed';                  // Post Feed Block for Events CPT

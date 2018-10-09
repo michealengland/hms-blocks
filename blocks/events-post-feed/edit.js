@@ -16,6 +16,7 @@ const {
 	QueryControls,
 	RangeControl,
 	Spinner,
+	SelectControl,
 	ToggleControl,
 	Toolbar,
 } = wp.components;
@@ -26,23 +27,17 @@ const {
 	BlockAlignmentToolbar,
 	BlockControls,
 } = wp.editor;
-const { withSelect } = wp.data;
+const {
+	withSelect,
+} = wp.data;
 
 const MAX_POSTS_COLUMNS = 6;
 
 class EventsPostsFeedEdit extends Component {
 	constructor() {
 		super( ...arguments );
-
-        this.toggleDisplayPostThumbnail = this.toggleDisplayPostThumbnail.bind( this );
-        this.toggleDisplayPostDate = this.toggleDisplayPostDate.bind( this );
-    }
-    
-    toggleDisplayPostThumbnail() {
-		const { displayPostThumbnail } = this.props.attributes;
-		const { setAttributes } = this.props;
-
-		setAttributes( { displayPostThumbnail: ! displayPostThumbnail } );
+		this.toggleDisplayPostDate = this.toggleDisplayPostDate.bind( this );
+		this.toggleDisplayPostImage = this.toggleDisplayPostImage.bind( this );
 	}
 
 	toggleDisplayPostDate() {
@@ -50,11 +45,26 @@ class EventsPostsFeedEdit extends Component {
 		const { setAttributes } = this.props;
 
 		setAttributes( { displayPostDate: ! displayPostDate } );
-    }
+	}
+	
+	toggleDisplayPostImage() {
+		const { displayPostImage } = this.props.attributes;
+		const { setAttributes } = this.props;
+
+		setAttributes( { displayPostImage: ! displayPostImage } );
+	}
     
 	render() {
 		const { attributes, categoriesList, setAttributes, latestPosts } = this.props;
-		const { displayPostThumbnail, displayPostDate, align, postLayout, columns, order, orderBy, categories, postsToShow, url } = attributes;
+		const { displayPostDate, displayPostImage, imageCrop, align, postLayout, columns, order, orderBy, categories, postsToShow, startDate } = attributes;
+
+		// Thumbnail options
+		const imageCropOptions = [
+			{ value: 'landscape', label: __( 'Landscape' ) },
+			{ value: 'square', label: __( 'Square' ) },
+		];
+
+		const isLandscape = imageCrop === 'landscape';
 
 		const inspectorControls = (
 			<InspectorControls>
@@ -71,10 +81,19 @@ class EventsPostsFeedEdit extends Component {
 					/>
 
 					<ToggleControl
-						label={ __( 'Display Post Thumbnail' ) }
-						checked={ displayPostThumbnail }
-						onChange={ this.toggleDisplayPostThumbnail }
+						label={ __( 'Display Featured Image' ) }
+						checked={ displayPostImage }
+						onChange={ this.toggleDisplayPostImage }
 					/>
+
+					{ displayPostImage &&
+						<SelectControl
+							label={ __( 'Featured Image Style' ) }
+							options={ imageCropOptions }
+							value={ imageCrop }
+							onChange={ ( value ) => this.props.setAttributes( { imageCrop: value } ) }
+						/>
+					}
 
 					<ToggleControl
 						label={ __( 'Display post date' ) }
@@ -132,6 +151,7 @@ class EventsPostsFeedEdit extends Component {
 				isActive: postLayout === 'grid',
 			},
 		];
+		
 
 		return (
 			<Fragment>
@@ -146,29 +166,38 @@ class EventsPostsFeedEdit extends Component {
 					/>
 					<Toolbar controls={ layoutControls } />
 				</BlockControls>
+
 				<ul
-					className={ classnames( this.props.className, {
-						'is-grid': postLayout === 'grid',
-						[ `columns-${ columns }` ]: postLayout === 'grid',
-					} ) }
+				className={ classnames( this.props.className, {
+					'is-grid': postLayout === 'grid',
+					[ `columns-${ columns }` ]: postLayout === 'grid',
+				} ) }
 				>
 					{ displayPosts.map( ( post, i ) =>
 						
-						<li key={ post.id }>
-						
+						<li
+						key={ i }
+						className={ classnames(
+							post.featured_image_src && displayPostImage ? 'has-featured': ''
+						) }
+						>
+
+						{ console.log( startDate )}
+
 						{
-						/*
-							displayPostThumbnail && post.featured_image_src !== undefined && post.featured_image_src ? (
-								<div class="featured-img">
+							displayPostImage && post.featured_image_src !== undefined && post.featured_image_src ? (
+							<div class="hms-block-post-grid-image">
+		
 									<img
-										src={ post.featured_image_src }
+										src={ isLandscape ? post.featured_image_src : post.featured_image_src_square }
 										alt={ decodeEntities( post.title.rendered.trim() ) || __( '(Untitled)' ) }
 									/>
-								</div>
+							
+							</div>
+							 				
 							) : (
 								null
 							)
-						*/
 						}
 							<a href={ post.link } target="_blank">{ decodeEntities( post.title.rendered.trim() ) || __( '(Untitled)' ) }</a>
 							{ displayPostDate && post.date_gmt &&
@@ -187,45 +216,23 @@ class EventsPostsFeedEdit extends Component {
 export default withSelect( ( select, props ) => {
 	const { postsToShow, order, orderBy, categories } = props.attributes;
 	const { getEntityRecords } = select( 'core' );
-
 	const latestPostsQuery = pickBy( {
-		categories,
+		hms_event_types: categories, // Changes rest base to hms_event_types taxonomy and selects term by Id
 		order,
 		orderby: orderBy,
+		query: true,
 		per_page: postsToShow,
 	},
-	
 	( value ) => ! isUndefined( value ) );
-	
 	const categoriesListQuery = {
 		per_page: 100,
 		showPostsCount: true,
-	};
-
-	console.log( latestPostsQuery );
-	
+	}
 	return {
-		/**
-		 * Requests the entity's records from the REST API.
-		 *
-		 * @param {string}  kind   Entity kind.
-		 * @param {string}  name   Entity name.
-		 * @param {Object?} query  Query Object.
-		 * 
-		 * getEntityRecords( kind, name, query = {} )
-		 */
-		// Enables post type on displayed posts.
-		latestPosts: getEntityRecords( 'postType', 'hms_events_cpt_1', latestPostsQuery ),
-		// Add taxonomies to list.
+		// Enables post type on displayed posts.		
+		latestPosts: getEntityRecords( 'postType', 'hms_events_cpt_1',latestPostsQuery ),
+		// Adds hms_event_types dropdown selector list.
 		categoriesList: getEntityRecords( 'taxonomy','hms_event_types', categoriesListQuery ),
-
-		// Original Post Query
-		//latestPosts: getEntityRecords( 'postType', 'post', latestPostsQuery ),
-		//categoriesList: getEntityRecords( 'taxonomy', 'category', categoriesListQuery ),
-		
 	};
-
-
-	
 
 } )( EventsPostsFeedEdit );

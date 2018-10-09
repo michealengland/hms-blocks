@@ -1,6 +1,10 @@
 {
   "name": "hms-blocks",
   "version": "2.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/michealengland/hms-blocks"
+  },
   "license": "MIT",
   "main": "blocks/index.js",
   "scripts": {
@@ -9,6 +13,7 @@
   },
   "devDependencies": {
     "@wordpress/babel-preset-default": "^1.2.0",
+    "ajv": "^6.0.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.3",
     "babel-loader": "^7.1.4",
@@ -21,6 +26,8 @@
     "moment-timezone": "^0.5.16",
     "node-sass": "^4.9.0",
     "postcss-loader": "^2.1.5",
+    "querystring": "^0.2.0",
+    "querystringify": "^1.0.0",
     "raw-loader": "^0.5.1",
     "re-resizable": "^4.7.1",
     "sass-loader": "^6.0.7",
