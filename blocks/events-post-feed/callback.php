@@ -13,8 +13,12 @@ function render_block_event_post_feed( $attributes ) {
             'post_type'   => 'hms_events_cpt_1',
 			'numberposts' => $attributes['postsToShow'],
 			'post_status' => 'publish',
+			//'meta_key'    => 'event_date_time',
+			//'orderby'     => $attributes['orderBy'],
+			'meta_key' => 'event_date_start',
+			'orderby' => 'meta_value',
 			'order'       => $attributes['order'],
-			'orderby'     => $attributes['orderBy'],
+			//'order' => 'DESC',
 			'tax_query' => array(
 				array(
 					'taxonomy' => 'hms_event_types',
@@ -22,6 +26,16 @@ function render_block_event_post_feed( $attributes ) {
 					'terms'    => $attributes['categories'],
 				),
 			),
+			'relationship' => 'AND',
+			'meta_query' => array( 
+				array(
+					'key'     => 'event_date_start', // ENDING DATE
+					'value'   => date( 'm/d/Y g:i a' ), // Current Date
+					'compare' => '>=', // event_date_time is greater than or equal to $current_time
+					'type'    => 'meta_value_datetime',
+				),
+			),
+
 			'OBJECT',
 			//'category'    => $attributes['categories'],
 		)
@@ -71,7 +85,24 @@ function render_block_event_post_feed( $attributes ) {
 				esc_html( get_the_date( '', $post_id ) )
 			);
 		}
-		
+
+
+		$list_items_markup .= '<p><span class="eventTimes">';
+
+		// Display Event Start Date Time
+		if ( isset( $attributes['displayStartDate'] ) && $attributes['displayStartDate'] ) {
+
+			$list_items_markup .= get_field('event_date_start', $post_id );
+		}
+
+		// Display Event End Date Time
+		if ( isset( $attributes['displayEndDate'] ) && $attributes['displayEndDate'] ) {
+
+			$list_items_markup .= ' to ' . get_field('event_date_end', $post_id );
+		}
+
+		$list_items_markup .= '</span></p>';
+
         
 		$list_items_markup .= "</li>\n";
 	}
@@ -121,6 +152,14 @@ function register_block_event_post_feed() {
 					'default' => 5,
 				),
 				'displayPostDate' => array(
+					'type'    => 'boolean',
+					'default' => false,
+				),
+				'displayStartDate' => array(
+					'type'    => 'boolean',
+					'default' => false,
+				),
+				'displayEndDate' => array(
 					'type'    => 'boolean',
 					'default' => false,
 				),
@@ -176,6 +215,7 @@ add_action( 'init', 'register_block_event_post_feed' );
  * Create API fields for additional info
  */
 function hms_blocks_register_rest_fields() {
+	
 	// Add landscape featured image source
 	register_rest_field(
 		'hms_events_cpt_1',

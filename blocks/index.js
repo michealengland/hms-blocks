@@ -1,4 +1,4 @@
-    /**
+/**
  * Import Blocks index.js
  * BUG: When using templates on save will cause content loss if template has been modified in editor.
  * INNER BLOCKS BREAK OTHER BLOCKS
@@ -13,4 +13,4 @@ import './offset-columns';                    // Inner Blocks Columns 2-3 Range 
 //import './flexslider';                        // Custom Flex Slider. SCRIPTS ARE LOADED IN CHILD THEME... NEED BETTER SOLUTION
 
 import './post-feed';                         // In development
-import './events-post-feed';                  // Post Feed Block for Events CPT
+import './events-post-feed';                  // In development Post Feed Block for Events CPT

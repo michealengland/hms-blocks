@@ -37,6 +37,8 @@ class EventsPostsFeedEdit extends Component {
 	constructor() {
 		super( ...arguments );
 		this.toggleDisplayPostDate = this.toggleDisplayPostDate.bind( this );
+		this.toggleDisplayStartDate = this.toggleDisplayStartDate.bind( this );
+		this.toggleDisplayEndDate = this.toggleDisplayEndDate.bind( this );
 		this.toggleDisplayPostImage = this.toggleDisplayPostImage.bind( this );
 	}
 
@@ -45,6 +47,20 @@ class EventsPostsFeedEdit extends Component {
 		const { setAttributes } = this.props;
 
 		setAttributes( { displayPostDate: ! displayPostDate } );
+	}
+
+	toggleDisplayStartDate() {
+		const { displayStartDate } = this.props.attributes;
+		const { setAttributes } = this.props;
+
+		setAttributes( { displayStartDate: ! displayStartDate } );
+	}
+
+	toggleDisplayEndDate() {
+		const { displayEndDate } = this.props.attributes;
+		const { setAttributes } = this.props;
+
+		setAttributes( { displayEndDate: ! displayEndDate } );
 	}
 	
 	toggleDisplayPostImage() {
@@ -56,7 +72,7 @@ class EventsPostsFeedEdit extends Component {
     
 	render() {
 		const { attributes, categoriesList, setAttributes, latestPosts } = this.props;
-		const { displayPostDate, displayPostImage, imageCrop, align, postLayout, columns, order, orderBy, categories, postsToShow, startDate } = attributes;
+		const { displayPostDate, displayStartDate, displayEndDate, displayPostImage, imageCrop, align, postLayout, columns, order, orderBy, categories, postsToShow, startDate } = attributes;
 
 		// Thumbnail options
 		const imageCropOptions = [
@@ -68,9 +84,10 @@ class EventsPostsFeedEdit extends Component {
 
 		const inspectorControls = (
 			<InspectorControls>
-				<PanelBody title={ __( 'Event Post Settings' ) }>
+				<PanelBody title={ __( 'Event Post Settings' ) } >
+
 					<QueryControls
-						{ ...{ order, orderBy } }
+						{ ...{ order, orderBy, } }
 						numberOfItems={ postsToShow }
 						categoriesList={ categoriesList }
 						selectedCategoryId={ categories }
@@ -96,9 +113,21 @@ class EventsPostsFeedEdit extends Component {
 					}
 
 					<ToggleControl
-						label={ __( 'Display post date' ) }
+						label={ __( 'Display post publish date.' ) }
 						checked={ displayPostDate }
 						onChange={ this.toggleDisplayPostDate }
+					/>
+
+					<ToggleControl
+						label={ __( 'Display event starting time.' ) }
+						checked={ displayStartDate }
+						onChange={ this.toggleDisplayStartDate }
+					/>
+
+					<ToggleControl
+						label={ __( 'Display event ending time.' ) }
+						checked={ displayEndDate }
+						onChange={ this.toggleDisplayEndDate }
 					/>
 
 					{ postLayout === 'grid' &&
@@ -168,7 +197,7 @@ class EventsPostsFeedEdit extends Component {
 				</BlockControls>
 
 				<ul
-				className={ classnames( this.props.className, {
+				className={ classnames( this.props.className, 'wp-block-latest-posts', {
 					'is-grid': postLayout === 'grid',
 					[ `columns-${ columns }` ]: postLayout === 'grid',
 				} ) }
@@ -181,18 +210,14 @@ class EventsPostsFeedEdit extends Component {
 							post.featured_image_src && displayPostImage ? 'has-featured': ''
 						) }
 						>
-
-						{ console.log( startDate )}
-
+					
 						{
 							displayPostImage && post.featured_image_src !== undefined && post.featured_image_src ? (
 							<div class="hms-block-post-grid-image">
-		
 									<img
 										src={ isLandscape ? post.featured_image_src : post.featured_image_src_square }
 										alt={ decodeEntities( post.title.rendered.trim() ) || __( '(Untitled)' ) }
 									/>
-							
 							</div>
 							 				
 							) : (
@@ -205,6 +230,24 @@ class EventsPostsFeedEdit extends Component {
 									{ moment( post.date_gmt ).local().format( 'MMMM DD, Y' ) }
 								</time>
 							}
+
+						{
+							displayStartDate && post.acf.event_date_start !== undefined && post.acf.event_date_start ? (
+								<p>{ "Start: "+post.acf.event_date_start }</p>		
+							) : (
+								null
+							)
+						}
+						
+						{
+							displayEndDate && post.acf.event_date_end !== undefined && post.acf.event_date_end ? (
+								<p>{ "End: "+post.acf.event_date_end }</p>						
+							) : (
+								null
+							)
+						}
+
+						
 						</li>
 					) }
 				</ul>
@@ -216,6 +259,7 @@ class EventsPostsFeedEdit extends Component {
 export default withSelect( ( select, props ) => {
 	const { postsToShow, order, orderBy, categories } = props.attributes;
 	const { getEntityRecords } = select( 'core' );
+	
 	const latestPostsQuery = pickBy( {
 		hms_event_types: categories, // Changes rest base to hms_event_types taxonomy and selects term by Id
 		order,
@@ -223,6 +267,8 @@ export default withSelect( ( select, props ) => {
 		query: true,
 		per_page: postsToShow,
 	},
+
+
 	( value ) => ! isUndefined( value ) );
 	const categoriesListQuery = {
 		per_page: 100,

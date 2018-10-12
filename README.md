@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 ##Change Log
 
+## 1.0.6
+- Working on custom post feed blocks. 
+- Testing Events Custom Post Type block.
+
 ## 1.0.5
 - Removed testing block.
 - Removed readme.txt

@@ -89,6 +89,12 @@ function render_block_custom_post_feed( $attributes ) {
  * Registers the `core/latest-posts` block on server.
  */
 function register_block_custom_post_feed() {
+
+	// Check if the register function exists
+	if ( ! function_exists( 'register_block_type' ) ) {
+		return;
+	}
+
 	register_block_type(
 		'hms/custom-post-feed',
 		array(
