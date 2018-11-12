@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 
 ##Change Log
 
+## 1.0.61
+- Updated editor style on innerblocks-cover-image to fix content being hidden behind the overlay.
+
 ## 1.0.6
 - Working on custom post feed blocks. 
 - Testing Events Custom Post Type block.

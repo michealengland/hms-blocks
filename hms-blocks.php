@@ -7,7 +7,7 @@
  * Domain Path: /languages
  * Author: Mike England @mikelikethebike
  * Author URI: https://twitter.com/mikelikethebike
- * Version: 1.0.6
+ * Version: 1.0.61
  * License: GPL2+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  *
@@ -37,12 +37,8 @@ include( plugin_dir_path( __FILE__ ) . 'lib/enqueue-scripts.php');
 // Block Templates
 include( plugin_dir_path( __FILE__ ) . 'lib/block-templates.php');
 
-
 // Post Feed Callback
 include( plugin_dir_path( __FILE__ ) . 'blocks/post-feed/callback.php');
-
-// Events Post Feed Callback
-include( plugin_dir_path( __FILE__ ) . 'blocks/events-post-feed/callback.php');
 
 
 
