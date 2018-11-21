@@ -33,5 +33,8 @@
     "sass-loader": "^6.0.7",
     "style-loader": "^0.19.1",
     "webpack": "^3.11.0"
+  },
+  "dependencies": {
+    "@wordpress/editor": "^9.0.1"
   }
 }

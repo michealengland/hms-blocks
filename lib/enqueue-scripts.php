@@ -13,7 +13,7 @@ function hms_blocks_editor_scripts() {
     wp_enqueue_script(
         'hms-blocks-js',
         plugins_url( $blockPath, __FILE__ ),
-        [ 'wp-i18n', 'wp-element', 'wp-blocks', 'wp-components' ],
+        [ 'wp-i18n', 'wp-element', 'wp-blocks', 'wp-components', 'wp-editor' ],
         filemtime( plugin_dir_path( __FILE__ ) . $blockPath )
     );
 

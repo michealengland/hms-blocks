@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 
 ##Change Log
 
+## 1.0.62
+- Added wp-editor as a dependency to make plugin compatibale with Gutenberg 4.5 release update.
+
 ## 1.0.61
 - Updated editor style on innerblocks-cover-image to fix content being hidden behind the overlay.
 

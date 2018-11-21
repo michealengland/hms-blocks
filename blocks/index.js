@@ -1,4 +1,5 @@
 import './i18n.js';
+import './test-block'; 
 import './innerblocks';                       // Inner Blocks Single Column w/ Color Panel
 import './innerblocks-cover-image';           // Inner Blocks Cover Image w/ Color Panel
 import './innerblocks-cta';                   // Inner Blocks Single Column w/ Color Panel, Heading, Paragraph, Button
