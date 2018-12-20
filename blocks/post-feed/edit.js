@@ -152,22 +152,7 @@ class CustomPostsFeedEdit extends Component {
 					} ) }
 				>
 					{ displayPosts.map( ( post, i ) =>
-						<li key={ i }>
-						
-						{
-						/*
-							displayPostThumbnail && post.featured_image_src !== undefined && post.featured_image_src ? (
-								<div class="featured-img">
-									<img
-										src={ post.featured_image_src }
-										alt={ decodeEntities( post.title.rendered.trim() ) || __( '(Untitled)' ) }
-									/>
-								</div>
-							) : (
-								null
-							)
-						*/
-						}
+						<li key={ i }>						
 							<a href={ post.link } target="_blank">{ decodeEntities( post.title.rendered.trim() ) || __( '(Untitled)' ) }</a>
 							{ displayPostDate && post.date_gmt &&
 								<time dateTime={ moment( post.date_gmt ).utc().format() } className={ `${ this.props.className }__post-date` }>
@@ -194,8 +179,6 @@ export default withSelect( ( select, props ) => {
 	const categoriesListQuery = {
 		per_page: 100,
 	};
-
-	console.log(latestPostsQuery);
 
 	return {
 		latestPosts: getEntityRecords( 'postType', 'post', latestPostsQuery ),

@@ -1,6 +1,3 @@
-// Import HMS child theme variable folder.
-@import "../../../wp-content/themes/hms-maverick/sass-input/partials/variables";
-
 .hms-toggle-content,
 .hms-toggle-expander,
 .hms-toggle-wrapper,
@@ -36,9 +33,7 @@ position: relative;
   }
 }
 
-
-
-/* the magic */
+// Hides overflown content.
 .hms-toggle-wrapper {
   width: 100%;
   overflow: hidden;
@@ -48,34 +43,12 @@ position: relative;
   margin-top: -3000px;
   transition: all 0.5s;
 }
+
 // Move Content to be Visible
 .hms-toggle-wrapper.open .hms-toggle-content {
   margin-top: 0;
 
   p:last-child {
   margin-bottom:0 ;
-  }
-}
-
-@media screen and (min-width: 1em) {
-  .wp-block-hms-toggleblock {
-  margin-bottom: $mod-gap-1 !important;
-  }
-
-  .hms-toggle-expander .toggle-title {
-  font-size: 1.4em;
-  }
-}
-
-@media screen and (min-width: 48em) {
-
-  .hms-toggle-expander .toggle-title {
-  font-size: 1.8em;
-  }
-}
-
-@media screen and (min-width: 60em) {
-  .hms-toggle-expander .toggle-title {
-  font-size: 2em;
   }
 }

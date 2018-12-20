@@ -1,5 +1,7 @@
 // Import HMS child theme variable folder.
-@import "../../../wp-content/themes/hms-maverick/sass-input/partials/variables";
+//@import "../../../wp-content/themes/hms-maverick/sass-input/partials/variables";
+$black: #000;
+$white: #fff;
 
 .wp-block-hms-image-tile {
 
@@ -13,7 +15,6 @@
     color: $white;
     font-size: unset;
     font-size: 1.4em;
-    font-weight: $thick;
     padding: 0;
     position: absolute;
     bottom: .5em;
@@ -85,30 +86,15 @@
 
 
 @media screen and (min-width: 1em) {
-  .wp-block-hms-image-tile {
 
-    p {
-    font-size: 1em;
-    line-height: 1.2em;
-    padding: $mod-gap-0;
-    }
-
-  }
 }
 
 
 @media screen and (min-width: 48em) {
-  .wp-block-hms-image-tile {
 
-    p {
-    font-size: .8em;
-    line-height: 1.2em;
-    padding: $mod-gap-0;
-    }
-
-  }
 }
 
 
 @media screen and (min-width: 60em) {
+
 }

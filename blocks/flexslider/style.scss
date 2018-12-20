@@ -1,5 +1,9 @@
 // Import HMS child theme variable file.
-@import "../../../wp-content/themes/hms-maverick/sass-input/partials/variables";
+//@import "../../../wp-content/themes/hms-maverick/sass-input/partials/variables";
+
+$color-8: #ff9900;
+$white: #fff;
+$black: #000;
 
 $font-path:                           "fonts";
 $font-name:                           "flexslider-icon";
@@ -21,7 +25,7 @@ $flexslider-box-shadow-y-axis:        1px;
 $flexslider-box-shadow-blur:          4px;
 $flexslider-box-shadow-color:         rgba( $black, 0.2 );
 $flexslider-box-shadow-inset:         '';
-$flex-viewport-max-height:            2000px;
+$flex-viewport-max-height:            100%;
 $flex-viewport-loading-max-height:    300px;
 $flex-control-thumbs:                 5px 0 0;
 $flex-direction-nav-color:            $white;
@@ -39,40 +43,10 @@ $flex-direction-nav-icon-next:        "\f0da";
 // WP Dashicons
 //$flex-direction-nav-icon-prev:        "\f341";
 //$flex-direction-nav-icon-next:        "\f345";
+
+//
 $flex-pauseplay-icon-play:            '\f522';
 $flex-pauseplay-icon-pause:           '\f523';
-
-//
-// Transition
-//
-@mixin transition( $default-duration, $default-easing ) {
--webkit-transition: all $default-duration $default-easing;
-        transition: all $default-duration $default-easing;
-}
-
-//
-// Border-radius
-//
-@mixin border-radius( $default-border-radius ){
-border-radius: $default-border-radius;
-}
-
-
-//
-// Box-shadow
-//
-@mixin box-shadow( $x-axis: $default-box-shadow-x-axis, $y-axis: $default-box-shadow-y-axis, $blur: $default-box-shadow-blur, $color: $default-box-shadow-color, $inset: $default-box-shadow-inset ) {
-
--webkit-box-shadow: inset $x-axis $y-axis $blur $color;
-     -o-box-shadow: inset $x-axis $y-axis $blur $color;
-        box-shadow: inset $x-axis $y-axis $blur $color;
-}
-
-
-
-/* ====================================================================================================================
- * FONT-FACE
- * ====================================================================================================================*/
 
 .dashicons, .dashicons-before::before {
 font-size: 20px;
@@ -93,17 +67,6 @@ content: "\f340";
 }
 
 
-/* ====================================================================================================================
- * RESETS
- * ====================================================================================================================*/
-
-
-.flex-container,
-.flex-slider {
-  a:hover {
-  outline: none;
-  }
-}
 
 .slides,
 .slides > li,
@@ -120,10 +83,36 @@ text-transform: capitalize;
 
 
 
+// OBJECT FIT Solution
+.flexslider .flex-viewport .slides li {
+  display: flex !important;
+  flex-direction: column;
 
-/* ====================================================================================================================
- * BASE STYLES
- * ====================================================================================================================*/
+  figure {
+  height: 100%;
+  margin: 0;
+
+    figcaption { 
+    background-color: rgba($black, .7);
+    color: $white;
+    padding: .5em;
+    margin: 0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    }
+
+    img {
+    height: 100% !important;
+    width: 100%;
+    object-fit: cover;
+    }
+  }
+}
+
+
+
 $min-slide-height: 468px;
 
 .flexslider {
@@ -134,13 +123,12 @@ max-width: 100%;
 overflow: hidden;
 padding: 0;
 
+  // UL
   .slides {
-  background-color: #efefef;
+  min-height: 450px;
+  height: 1px;
 
     li {
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
     display: none;
     height: 100%;
     position: relative;
@@ -205,10 +193,6 @@ padding: 0;
   }
 }
 
-/* ====================================================================================================================
- * RESPONSIVE
- * ====================================================================================================================*/
-
 @media screen and ( max-width: 860px ) {
 
   .flex-direction-nav {
@@ -223,20 +207,13 @@ padding: 0;
   }
 }
 
-
-
-/* ====================================================================================================================
- * DEFAULT THEME
- * ====================================================================================================================*/
-
-
 .flexslider {
 margin: 0;
 position: relative;
 
 
   .slides {
-  //zoom: 1;
+  zoom: 1;
 
   img {
   height: auto;
@@ -248,7 +225,7 @@ position: relative;
 
 .flex-viewport {
 max-height: $flex-viewport-max-height;
-@include transition( $default-duration, $default-easing );
+transition: 1s ease;
 
   .loading & {
   max-height: $flex-viewport-loading-max-height;
@@ -266,7 +243,6 @@ margin-right: 0;
 
 .flex-direction-nav {
 height: 0;
-margin-bottom: -.7em;
 
   // Global styles
   a  {
@@ -285,7 +261,7 @@ margin-bottom: -.7em;
   text-shadow: $flex-direction-nav-text-shadow;
   font-family: $dashicons-family;
   font-size: 0;
-  @include transition( 0.3s, ease-in-out );
+  transition: .3s ease-in-out;
 
     .flex-next:before {
     content: $flex-direction-nav-icon-next;
@@ -320,8 +296,7 @@ margin-bottom: -.7em;
 
     .flex-prev, .flex-next {
     font-family: FontAwesome;
-    //font-family: $dashicons-family;
-    background-color: $color-1;
+    background-color: #222;
     box-shadow: none;
     color: $white;
     text-align: center;
@@ -410,14 +385,12 @@ margin-bottom: -.7em;
 .flex-control-nav {
 border-radius: 12px 12px 0 0;
 display: inline-block;
-//line-height: 0;
 text-align: center;
 width: 100%;
 
   li {
-  padding: 5px;
   display: inline-block;
-  //zoom: 1;
+  padding: 5px;
   }
 }
 
@@ -431,18 +404,19 @@ width: 100%;
   li {
     a {
     display: block;
-    background: darken($color-1, 20%);
+    background: $black;
     border-radius: 10px;
     box-shadow: 0 0 0 1px $white;
-    color: $color-4;
+    color: $white;
     height: 10px;
     cursor: pointer;
     text-indent: -9999px;
     width: 10px;
 
       &.flex-active {
-      color: $color-2;
-      background: $color-1;
+      background: #fff;
+      box-shadow: 0 0 0 2px $black;
+      color: $black;
       cursor: default;
       }
 
@@ -452,6 +426,8 @@ width: 100%;
 
       &:focus {
       outline: none;
+      background: #ddd;
+      box-shadow: 0 0 0 2px $black;
       }
     } // a
   } // li
@@ -476,7 +452,7 @@ overflow: hidden;
   opacity: .7;
   cursor: pointer;
   -moz-user-select: none;
-  @include transition( $default-duration, $default-easing );
+  transition: 1s ease;
 
     &:hover {
     opacity: 1;
@@ -500,24 +476,16 @@ overflow: hidden;
     }
   }
 
-  .flex-control-paging {
-    padding: .5em 0;
-  }
-
 } // End Query
 
 @media (min-width: 48em) {
-  .wp-block-hms-fs {
-  margin-bottom: $mod-gap-0;
-  }
-
 
   // Move Paging Icons on top of slider
   .flex-control-paging {
+    line-height: 0;
     margin: 0;
-    position: absolute;
+    position: relative;
     bottom: 0;
-    padding: .2em 0;
   }
 } // End Query
 

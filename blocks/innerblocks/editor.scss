@@ -11,3 +11,8 @@
     color: rgba(255,255,255,.7);
     }
 }
+
+
+.edit-post-visual-editor .editor-block-list__block:not(.has-color) {
+    color: inherit;
+}

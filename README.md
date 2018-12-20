@@ -3,6 +3,18 @@ All notable changes to this project will be documented in this file.
 
 ##Change Log
 
+## 1.0.64
+- Refactored enqueues in the toggle block and flexslider block to.
+- Improvement the slider block and toggle block to run jQuery 3.3.1.
+- Removed styles from multiple blocks that relied on variables in child theme. All color and spacing related styles will be in the child theme in the future.
+- Removed dependencies in enqueue-scripts.php for Gutenberg plugin so that editor styles will load on 5.0.1+ versions of WordPress.
+- Updated NPM Dependency for cross-env.
+- Removed unneeded files / blocks.
+- Fixed editor color and z-index issues present in certain blocks.
+- Tested pluging with current version of WordPress and Gutenberg plugin.
+- Added document.ready wrappers to jQuery in Flexslider and the Toggle Block.
+- Refactored styles for Flexslider and removed unused variables.
+
 ## 1.0.62
 - Added wp-editor as a dependency to make plugin compatibale with Gutenberg 4.5 release update.
 

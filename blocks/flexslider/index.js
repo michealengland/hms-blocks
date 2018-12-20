@@ -7,7 +7,6 @@ import every from 'lodash/every';
 /**
  * WordPress dependencies
  */
-
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
 const { RichText, mediaUpload } = wp.editor;
@@ -19,6 +18,7 @@ const { createBlobURL } = wp.blob;
 import { default as edit } from './edit';
 
 import './style.scss';
+import './editor.scss';
 
 const blockAttributes = {
 	images: {
@@ -113,6 +113,7 @@ export default registerBlockType(
 					} ) }
 				</ul>
 			</div>
+
 		);
 	},
 } );
