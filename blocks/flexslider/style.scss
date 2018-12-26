@@ -1,7 +1,3 @@
-// Import HMS child theme variable file.
-//@import "../../../wp-content/themes/hms-maverick/sass-input/partials/variables";
-
-$color-8: #ff9900;
 $white: #fff;
 $black: #000;
 
@@ -274,7 +270,6 @@ height: 0;
   .flex-prev {
   border-radius: 50px;
   box-shadow: none;
-  color: $color-8; // Fixxes a11y contrast issue
   left: -50px;
   }
 
@@ -282,7 +277,6 @@ height: 0;
   .flex-next {
   border-radius: 50px;
   box-shadow: none;
-  color: $color-8; // Fixxes a11y contrast issue
   right: -50px;
   text-align: right;
   }

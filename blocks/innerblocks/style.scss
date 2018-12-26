@@ -1,18 +1,8 @@
-// Import HMS child theme variable folder.
-@import "../../../wp-content/themes/hms-maverick/sass-input/partials/variables";
-
 @media screen and (min-width: 1em) {
   .wp-block-hms-innerblocks {
-  margin-bottom: $mod-gap-1;
-  padding: $mod-gap-1;
 
     h1, h2, h3, h4, h5, h6 {
-    font-weight: $thick;
     color: unset;
-    }
-
-    .layout-inner {
-    padding-bottom: $mod-gap-0;
     }
 
     .layout-inner:last-child {
@@ -22,10 +12,8 @@
   }
 }
 
-
 @media screen and (min-width: 48em) {
   .wp-block-hms-innerblocks {
-  height: 100%;
   overflow: hidden;
   position: relative;
   display: flex;
@@ -34,9 +22,5 @@
   }
 }
 
-
 @media screen and (min-width: 60em) {
-  .wp-block-hms-innerblocks {
-  padding: $mod-gap-2;
-  }
 }

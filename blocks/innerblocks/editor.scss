@@ -16,3 +16,8 @@
 .edit-post-visual-editor .editor-block-list__block:not(.has-color) {
     color: inherit;
 }
+
+// Remove default margin right
+.wp-block-hms-innerblocks:nth-child(2n+1) {
+    margin-right: 0;
+}

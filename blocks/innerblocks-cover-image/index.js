@@ -4,7 +4,7 @@
 
 import classnames from 'classnames';
 
-const { __, } = wp.i18n;
+const { __ } = wp.i18n;
 
 const {
 	registerBlockType,

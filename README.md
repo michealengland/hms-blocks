@@ -3,6 +3,13 @@ All notable changes to this project will be documented in this file.
 
 ##Change Log
 
+## 1.0.65
+- Refactored Custom Post Feed block.
+- Fixed toggle issues in Custom Post Feed block.
+- Removed various editor stylings and dependencies on child theme.
+- Removed margin-right on Innerblocks block.
+- Removed changelog.txt since it was no longer being utilized.
+
 ## 1.0.64
 - Refactored enqueues in the toggle block and flexslider block to.
 - Improvement the slider block and toggle block to run jQuery 3.3.1.

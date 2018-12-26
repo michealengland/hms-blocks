@@ -1,37 +1,33 @@
 /**
  * External dependencies
  */
-import isUndefined from 'lodash/isUndefined';
-import pickBy from 'lodash/pickBy';
-import moment from 'moment';
+import { isUndefined, pickBy } from 'lodash';
 import classnames from 'classnames';
 
 /**
  * WordPress dependencies
  */
-const { Component, Fragment } = wp.element;
-const {
+import { Component, Fragment } from '@wordpress/element';
+import {
 	PanelBody,
 	Placeholder,
 	QueryControls,
 	RangeControl,
-	SelectControl,
 	Spinner,
 	ToggleControl,
 	Toolbar,
-} = wp.components;
+} from '@wordpress/components';
 import apiFetch from '@wordpress/api-fetch';
-const { addQueryArgs } = wp.url;
-const  { __ } = wp.i18n;
-const { dateI18n, format, __experimentalGetSettings } = wp.date;
-const { decodeEntities } = wp.htmlEntities;
-const {
+import { addQueryArgs } from '@wordpress/url';
+import { __ } from '@wordpress/i18n';
+import { dateI18n, format, __experimentalGetSettings } from '@wordpress/date';
+import { decodeEntities } from '@wordpress/html-entities';
+import {
 	InspectorControls,
 	BlockAlignmentToolbar,
 	BlockControls,
-} = wp.editor;
-const { withSelect } = wp.data;
-
+} from '@wordpress/editor';
+import { withSelect } from '@wordpress/data';
 
 /**
  * Module Constants
@@ -41,16 +37,15 @@ const CATEGORIES_LIST_QUERY = {
 };
 const MAX_POSTS_COLUMNS = 6;
 
-class CustomPostsFeedEdit extends Component {
+class LatestPostsEdit extends Component {
 	constructor() {
 		super( ...arguments );
 		this.state = {
 			categoriesList: [],
 		};
-        this.toggleDisplayPostImage = this.toggleDisplayPostImage.bind( this );
-        this.toggleDisplayPostDate = this.toggleDisplayPostDate.bind( this );
+		this.toggleDisplayPostDate = this.toggleDisplayPostDate.bind( this );
 	}
-	
+
 	componentWillMount() {
 		this.isStillMounted = true;
 		this.fetchRequest = apiFetch( {
@@ -74,35 +69,17 @@ class CustomPostsFeedEdit extends Component {
 		this.isStillMounted = false;
 	}
 
-    
-    toggleDisplayPostImage() {
-		const { displayPostImage } = this.props.attributes;
-		const { setAttributes } = this.props;
-
-		setAttributes( { displayPostImage: ! displayPostImage } );
-	}
-
 	toggleDisplayPostDate() {
 		const { displayPostDate } = this.props.attributes;
 		const { setAttributes } = this.props;
 
 		setAttributes( { displayPostDate: ! displayPostDate } );
-    }
-    
+	}
 
 	render() {
 		const { attributes, setAttributes, latestPosts } = this.props;
 		const { categoriesList } = this.state;
-		const { displayPostImage, displayPostDate, align, imageCrop, postLayout, columns, order, orderBy, categories, postsToShow, url } = attributes;
-
-		
-		// Thumbnail options
-		const imageCropOptions = [
-			{ value: 'landscape', label: __( 'Landscape' ) },
-			{ value: 'square', label: __( 'Square' ) },
-		];
-
-		const isLandscape = imageCrop === 'landscape';
+		const { displayPostDate, align, postLayout, columns, order, orderBy, categories, postsToShow } = attributes;
 
 		const inspectorControls = (
 			<InspectorControls>
@@ -117,22 +94,6 @@ class CustomPostsFeedEdit extends Component {
 						onCategoryChange={ ( value ) => setAttributes( { categories: '' !== value ? value : undefined } ) }
 						onNumberOfItemsChange={ ( value ) => setAttributes( { postsToShow: value } ) }
 					/>
-
-					<ToggleControl
-						label={ __( 'Display Featured Image' ) }
-						checked={ displayPostImage }
-						onChange={ this.toggleDisplayPostImage }
-					/>
-
-					{ displayPostImage &&
-						<SelectControl
-							label={ __( 'Featured Image Style' ) }
-							options={ imageCropOptions }
-							value={ imageCrop }
-							onChange={ ( value ) => this.props.setAttributes( { imageCrop: value } ) }
-						/>
-					}
-
 					<ToggleControl
 						label={ __( 'Display post date' ) }
 						checked={ displayPostDate }
@@ -207,29 +168,12 @@ class CustomPostsFeedEdit extends Component {
 				<ul
 					className={ classnames( this.props.className, {
 						'is-grid': postLayout === 'grid',
+						'has-dates': displayPostDate,
 						[ `columns-${ columns }` ]: postLayout === 'grid',
 					} ) }
 				>
 					{ displayPosts.map( ( post, i ) =>
-						<li
-						key={ i }
-						className={ classnames(
-							post.featured_image_src && displayPostImage ? 'has-featured': ''
-						) }
-						>
-
-						{
-							displayPostImage && post.featured_image_src !== undefined && post.featured_image_src ? (
-							<div class="hms-block-post-grid-image">
-								<img
-								src={ isLandscape ? post.featured_image_src : post.featured_image_src_square }
-								alt={ decodeEntities( post.title.rendered.trim() ) || __( '(Untitled)' ) }
-								/>
-							</div>	
-							) : (
-								null
-							)
-						}				
+						<li key={ i }>
 							<a href={ post.link } target="_blank">{ decodeEntities( post.title.rendered.trim() ) || __( '(Untitled)' ) }</a>
 							{ displayPostDate && post.date_gmt &&
 								<time dateTime={ format( 'c', post.date_gmt ) } className="wp-block-latest-posts__post-date">
@@ -256,4 +200,4 @@ export default withSelect( ( select, props ) => {
 	return {
 		latestPosts: getEntityRecords( 'postType', 'post', latestPostsQuery ),
 	};
-} )( CustomPostsFeedEdit );
+} )( LatestPostsEdit );

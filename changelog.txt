@@ -1,2 +1,0 @@
-Version 0.1.0
-  - Fixed bug with compose on Gutenberg 3.5. Changed const { compose  } = wp.element; to const { compose } = wp.compose;

@@ -1,10 +1,12 @@
+
 .wp-block-hms-offset-columns.wp-block-columns {
   .wp-block-column {
-  &nth-child(odd),
-  &nth-child(even), {
-  max-width: 100%;
+    &:nth-child(odd),
+    &:nth-child(even)
+    {
+    max-width: 100%;
+    }
   }
-}
 }
 
 .wp-block-hms-offset-columns.wp-block-columns > .editor-inner-blocks > .editor-block-list__layout > [data-type="core/column"] {
@@ -13,8 +15,9 @@
 }
 
 .wp-block-hms-offset-columns.wp-block-columns .wp-block-column {
-  &nth-child(odd),
-  &nth-child(even), {
+  &:nth-child(odd),
+  &:nth-child(even)
+  {
   max-width: 100% !important;
   width: 100%;
   }

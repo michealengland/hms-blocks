@@ -1,8 +1,8 @@
 <?php
 /**
- * Server-side rendering of the `core/latest-posts` block.
+ * Server-side rendering of the `hms/custom-post-feed` block.
  *
- * @package WordPress
+ * @package gutenberg
  */
 /**
  * Renders the `hms/custom-post-feed` block on server.
@@ -11,8 +11,13 @@
  *
  * @return string Returns the post content with latest posts added.
  */
-
 function render_block_custom_post_feed( $attributes ) {
+
+
+
+
+	echo '<pre>' .  $attributes['categories'] . '</pre>';
+
 	$args = array(
 		'numberposts' => $attributes['postsToShow'],
 		'post_status' => 'publish',
@@ -22,14 +27,17 @@ function render_block_custom_post_feed( $attributes ) {
 	if ( isset( $attributes['categories'] ) ) {
 		$args['category'] = $attributes['categories'];
 	}
-	$recent_posts = wp_get_recent_posts( $args );
+
 	$list_items_markup = '';
 	foreach ( $recent_posts as $post ) {
 		$post_id = $post['ID'];
 		$title = get_the_title( $post_id );
 		if ( ! $title ) {
-			$title = __( '(Untitled)' );
-		}
+			$title = __( '(Untitled)', 'gutenberg' );
+        }
+
+        $list_items_markup .= '<li>';
+        
 
 		// If Post Thumb Option Enabled
 		if( has_post_thumbnail( $post_id ) && ! isset( $attributes['displayPostImage'] ) ) {
@@ -37,11 +45,11 @@ function render_block_custom_post_feed( $attributes ) {
 		}
 
 		$list_items_markup .= sprintf(
-			'<li><a href="%1$s">%2$s %3$s</a>',
+            '<a href="%1$s">%2$s</a>',
+            //get_the_post_thumbnail( $post_id, 'post-thumbnail' ),
 			esc_url( get_permalink( $post_id ) ),
-			get_the_post_thumbnail( $post_id, 'thumbnail', true ),
 			esc_html( $title )
-		);
+        );
 
 		if ( isset( $attributes['displayPostDate'] ) && $attributes['displayPostDate'] ) {
 			$list_items_markup .= sprintf(
@@ -50,6 +58,8 @@ function render_block_custom_post_feed( $attributes ) {
 				esc_html( get_the_date( '', $post_id ) )
 			);
 		}
+		
+        
 		$list_items_markup .= "</li>\n";
 	}
 	$class = 'wp-block-latest-posts hms-custom-post-feed';
@@ -62,9 +72,6 @@ function render_block_custom_post_feed( $attributes ) {
 	if ( isset( $attributes['columns'] ) && 'grid' === $attributes['postLayout'] ) {
 		$class .= ' columns-' . $attributes['columns'];
 	}
-	if ( isset( $attributes['displayPostDate'] ) && $attributes['displayPostDate'] ) {
-		$class .= ' has-dates';
-	}
 	if ( isset( $attributes['className'] ) ) {
 		$class .= ' ' . $attributes['className'];
 	}
@@ -75,7 +82,6 @@ function render_block_custom_post_feed( $attributes ) {
 	);
 	return $block_content;
 }
-
 
 /**
  * Registers the `core/latest-posts` block on server.
