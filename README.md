@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 
 ##Change Log
 
+## 1.0.66
+- Modified style for H2 header always being white.
+
 ## 1.0.65
 - Refactored Custom Post Feed block.
 - Fixed toggle issues in Custom Post Feed block.
